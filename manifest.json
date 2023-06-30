@@ -1,0 +1,22 @@
+{
+  "manifest_version": 3,
+  "name": "SLT Usage Meter Pro",
+  "version": "0.0.1",
+  "description": "Detailed usage meter for SLT Broadband",
+  "host_permissions": [
+    "*://myslt.slt.lk/*"
+  ],
+  "icons": {
+    "16": "assets/ext-icon.png",
+    "24": "assets/ext-icon.png",
+    "32": "assets/ext-icon.png"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "*://myslt.slt.lk/*"
+      ],
+      "js": ["contentScript.js"]
+    }
+  ]
+}
