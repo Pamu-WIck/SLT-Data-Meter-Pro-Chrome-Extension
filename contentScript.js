@@ -31,10 +31,47 @@ let checkInterval = setInterval(function () {
 
 function usageCal(peakUsed, peakTotal, fullUsed, fullTotal, validTill) {
     const peakRemain = peakTotal - peakUsed;
-    const offPeakRemain = fullTotal - fullUsed;
+
+    const offPeakTotal = fullTotal - peakTotal;
+    const offPeakUsed = (fullUsed - peakUsed).toFixed(1);
+    const offPeakRemain = offPeakTotal - offPeakUsed;
 
     const calculateRemainPercent = (remain, total) => Math.round((remain / total) * 100);
     const calculateDailyQuota = (total) => total / 30;
+
+    const DaysCount = (validTill) => {
+        let [day, month] = validTill.split('-');
+        let monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep',
+            'Oct', 'Nov', 'Dec'];
+        let monthNumber = monthNames.indexOf(month) + 1;
+        let currentYear = new Date().getFullYear();
+        let validTillDate = new Date(`${currentYear}-${monthNumber}-${day}`);
+        validTillDate.setHours(0, 0, 0, 0);  // set time to the start of the day
+
+        let currentDate = new Date();
+        currentDate.setHours(0, 0, 0, 0);  // set time to the start of the day
+
+        let startDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1); // set date to the start of the current month
+
+        let differenceInTime = validTillDate.getTime() - currentDate.getTime();
+        let differenceInDays = differenceInTime / (1000 * 3600 * 24); // remaining days
+
+        let pastTime = currentDate.getTime() - startDate.getTime();
+        let pastDays = pastTime / (1000 * 3600 * 24)+1; // passed days
+
+        return {
+            remainingDays: Math.ceil(differenceInDays),
+            passedDays: Math.ceil(pastDays)
+        };
+    }
+
+    let remainingDays = DaysCount(validTill).remainingDays;
+    let passedDays = DaysCount(validTill).passedDays;
+
+    let DailyQuota = (data, days) => {
+        return (data / days).toFixed(1);
+    }
+
 
     return {
         peak: {
@@ -43,18 +80,30 @@ function usageCal(peakUsed, peakTotal, fullUsed, fullTotal, validTill) {
             remain: peakRemain,
             remainPercent: calculateRemainPercent(peakRemain, peakTotal),
             dailyQuota: calculateDailyQuota(peakTotal),
-            // currentDailyQuota: (peakUsed / date.passedDays).toFixed(1),
-            // remainDailyQuota: (peakRemain / date.remainingDays).toFixed(1)
+            currentDailyQuota: DailyQuota(peakUsed, passedDays),
+            remainDailyQuota: DailyQuota(peakRemain, remainingDays)
         },
         offPeak: {
+
+            used: offPeakUsed,
+            total: offPeakTotal,
+            remain: offPeakRemain,
+            remainPercent: calculateRemainPercent(offPeakRemain, offPeakTotal),
+            dailyQuota: calculateDailyQuota(offPeakTotal),
+            currentDailyQuota: DailyQuota(offPeakUsed, passedDays),
+            remainDailyQuota:  DailyQuota(offPeakRemain, remainingDays)
+        },
+        total: {
             used: fullUsed,
             total: fullTotal,
-            remain: offPeakRemain,
-            remainPercent: calculateRemainPercent(offPeakRemain, fullTotal),
+            remain: fullTotal - fullUsed,
+            remainPercent: calculateRemainPercent(fullTotal - fullUsed, fullTotal),
             dailyQuota: calculateDailyQuota(fullTotal),
-            // currentDailyQuota: (fullUsed / date.passedDays).toFixed(1),
-            // remainDailyQuota: (offPeakRemain / date.remainingDays).toFixed(1)
+            currentDailyQuota: DailyQuota(fullUsed, passedDays),
+            remainDailyQuota: DailyQuota(fullTotal - fullUsed, remainingDays)
         },
-        validTill: validTill
+
+        validTill: validTill,
+        remainDays: DaysCount(validTill)
     };
 }
