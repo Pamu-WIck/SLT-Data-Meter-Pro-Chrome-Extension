@@ -1,4 +1,4 @@
-let checkInterval = setInterval(function() {
+let checkInterval = setInterval(function () {
     const peakElement = document.querySelector('li.slide.selected .used-of');
     const fullElement = document.querySelector('li.slide:not(.selected) .used-of');
     const validTillElement = document.querySelector('li.slide.selected .text-center.blue');
@@ -21,6 +21,40 @@ let checkInterval = setInterval(function() {
 
 
         console.log(peakUsed, peakTotal, fullUsed, fullTotal, validTill);
+
+        let usage = usageCal(peakUsed, peakTotal, fullUsed, fullTotal, validTill);
+        console.log(
+            usage
+        );
     }
 }, 1000);  // Check every 1000 milliseconds = 1 second
 
+function usageCal(peakUsed, peakTotal, fullUsed, fullTotal, validTill) {
+    const peakRemain = peakTotal - peakUsed;
+    const offPeakRemain = fullTotal - fullUsed;
+
+    const calculateRemainPercent = (remain, total) => Math.round((remain / total) * 100);
+    const calculateDailyQuota = (total) => total / 30;
+
+    return {
+        peak: {
+            used: peakUsed,
+            total: peakTotal,
+            remain: peakRemain,
+            remainPercent: calculateRemainPercent(peakRemain, peakTotal),
+            dailyQuota: calculateDailyQuota(peakTotal),
+            // currentDailyQuota: (peakUsed / date.passedDays).toFixed(1),
+            // remainDailyQuota: (peakRemain / date.remainingDays).toFixed(1)
+        },
+        offPeak: {
+            used: fullUsed,
+            total: fullTotal,
+            remain: offPeakRemain,
+            remainPercent: calculateRemainPercent(offPeakRemain, fullTotal),
+            dailyQuota: calculateDailyQuota(fullTotal),
+            // currentDailyQuota: (fullUsed / date.passedDays).toFixed(1),
+            // remainDailyQuota: (offPeakRemain / date.remainingDays).toFixed(1)
+        },
+        validTill: validTill
+    };
+}
