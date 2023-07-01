@@ -14,7 +14,7 @@
   "content_scripts": [
     {
       "matches": [
-        "*://myslt.slt.lk/*"
+        "*://myslt.slt.lk/boardBand/summary"
       ],
       "js": ["contentScript.js"]
     }
