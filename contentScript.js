@@ -26,6 +26,13 @@ let checkInterval = setInterval(function () {
         console.log(
             usage
         );
+
+        //offPeakWidget
+        offPeakWidget(
+            usage.offPeak.used,
+            usage.offPeak.total,
+            usage.offPeak.remain,
+            usage.validTill)
     }
 }, 1000);  // Check every 1000 milliseconds = 1 second
 
@@ -57,7 +64,7 @@ function usageCal(peakUsed, peakTotal, fullUsed, fullTotal, validTill) {
         let differenceInDays = differenceInTime / (1000 * 3600 * 24); // remaining days
 
         let pastTime = currentDate.getTime() - startDate.getTime();
-        let pastDays = pastTime / (1000 * 3600 * 24)+1; // passed days
+        let pastDays = pastTime / (1000 * 3600 * 24) + 1; // passed days
 
         return {
             remainingDays: Math.ceil(differenceInDays),
@@ -91,7 +98,7 @@ function usageCal(peakUsed, peakTotal, fullUsed, fullTotal, validTill) {
             remainPercent: calculateRemainPercent(offPeakRemain, offPeakTotal),
             dailyQuota: calculateDailyQuota(offPeakTotal),
             currentDailyQuota: DailyQuota(offPeakUsed, passedDays),
-            remainDailyQuota:  DailyQuota(offPeakRemain, remainingDays)
+            remainDailyQuota: DailyQuota(offPeakRemain, remainingDays)
         },
         total: {
             used: fullUsed,
@@ -106,4 +113,42 @@ function usageCal(peakUsed, peakTotal, fullUsed, fullTotal, validTill) {
         validTill: validTill,
         remainDays: DaysCount(validTill)
     };
+}
+
+
+function offPeakWidget(offPeakUsed, offPeakTotal, offPeakRemain, validTill) {
+
+    let graphBody = document.querySelector('.graphBody');
+
+    // Calculate the ratio of remaining data to total data
+    let ratio = offPeakUsed / offPeakTotal;
+    console.log(ratio);
+    let strokeDashOffset =  ratio * 628.3185307179587;
+
+
+    let htmlString = `<li class="slide selected">
+    <div class=" m-auto" style="width: 100%;">
+        <div class="text-center">
+            <div class="name">Night</div>
+            <div class="progress-bar-container">
+                <div class="RCP " style="position: relative; width: 240px;">
+                    <svg width="240" height="240" viewBox="0 0 240 240" style="transform: rotate(-90deg);">
+                        <circle cx="120" cy="120" r="100" fill="none" stroke="#3077b4" stroke-width="16"
+                                stroke-dasharray="628.3185307179587, 628.3185307179587" stroke-linecap="round"
+                                class="RCP__track" style="transition: all 0.3s ease 0s;"></circle>
+                        <circle cx="120" cy="120" r="100" fill="none" stroke="#3ccd6a" stroke-width="19"
+                                stroke-dasharray="628.3185307179587, 628.3185307179587"
+                                stroke-dashoffset="${strokeDashOffset}" stroke-linecap="round" class="RCP__progress"
+                                style="transition: all 0.3s ease 0s;"></circle>
+                    </svg>
+                    <div class="indicator"><p class="progress-count"> ${offPeakRemain} GB </p><p
+                        class="label"> REMAINING</p></div>
+                </div>
+            </div>
+            <div class="used-of">${offPeakUsed} GB USED OF ${offPeakTotal} GB</div>
+            <p class="text-center blue">(Valid Till : ${validTill})</p></div>
+    </div>
+</li>`;
+
+    graphBody.insertAdjacentHTML('beforeend', htmlString);
 }
