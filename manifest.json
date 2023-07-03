@@ -7,9 +7,7 @@
     "*://myslt.slt.lk/*"
   ],
   "icons": {
-    "16": "assets/ext-icon.png",
-    "24": "assets/ext-icon.png",
-    "32": "assets/ext-icon.png"
+    "48": "icons/icon48.png"
   },
   "content_scripts": [
     {
