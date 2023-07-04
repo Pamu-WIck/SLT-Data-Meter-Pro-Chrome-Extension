@@ -7,14 +7,20 @@
     "*://myslt.slt.lk/*"
   ],
   "icons": {
-    "48": "icons/icon48.png"
+    "16": "assets/icon16.png",
+    "32": "assets/icon19.png",
+    "48": "assets/icon48.png",
+    "128": "assets/icon128.png"
   },
   "content_scripts": [
     {
       "matches": [
         "*://myslt.slt.lk/boardBand/summary"
       ],
-      "js": ["contentScript.js"]
+      "js": [
+        "contentScript.js",
+        "utils.js"
+      ]
     }
   ]
 }

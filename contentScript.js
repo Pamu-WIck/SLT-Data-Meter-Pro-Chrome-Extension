@@ -3,29 +3,19 @@ let checkInterval = setInterval(function () {
     const fullElement = document.querySelector('li.slide:not(.selected) .used-of');
     const validTillElement = document.querySelector('li.slide.selected .text-center.blue');
 
-    //validTillElement <p className="text-center blue">(Valid Till : 31-Jul)</p>
-
     if (!peakElement || !fullElement || !validTillElement) {
         console.log('One or more elements could not be found, retrying...');
     } else {
         clearInterval(checkInterval);  // Stop checking when the elements are found
 
-        let peakText = peakElement.textContent;
-        let [peakUsed, peakTotal] = peakText.split(" USED OF ").map(parseFloat);
-
-        let fullText = fullElement.textContent;
-        let [fullUsed, fullTotal] = fullText.split(" USED OF ").map(parseFloat);
-
-        let validTillText = validTillElement.textContent;
-        let validTill = validTillText.split(" : ")[1].split(")")[0];
-
+        let [peakUsed, peakTotal] = peakElement.textContent.split(" USED OF ").map(parseFloat);
+        let [fullUsed, fullTotal] = fullElement.textContent.split(" USED OF ").map(parseFloat);
+        let validTill = validTillElement.textContent.split(" : ")[1].split(")")[0];
 
         console.log(peakUsed, peakTotal, fullUsed, fullTotal, validTill);
-
         let usage = usageCal(peakUsed, peakTotal, fullUsed, fullTotal, validTill);
-        console.log(
-            usage
-        );
+
+        console.log(usage);
 
         //offPeakWidget
         offPeakWidget(
@@ -34,8 +24,15 @@ let checkInterval = setInterval(function () {
             usage.offPeak.remain,
             usage.validTill)
     }
-}, 1000);  // Check every 1000 milliseconds = 1 second
+}, 1000, );  // Check every 1000 milliseconds = 1 second
 
+// Stop checking after 20 seconds in case of Element not found
+setTimeout(function() {
+    clearInterval(checkInterval);
+    console.log('Timeout: Interval stopped after 20 seconds');
+}, 20000);
+
+//calculation for peak and off-peak
 function usageCal(peakUsed, peakTotal, fullUsed, fullTotal, validTill) {
     const peakRemain = peakTotal - peakUsed;
 
@@ -116,6 +113,7 @@ function usageCal(peakUsed, peakTotal, fullUsed, fullTotal, validTill) {
 }
 
 
+//widget for offPeak
 function offPeakWidget(offPeakUsed, offPeakTotal, offPeakRemain, validTill) {
 
     let graphBody = document.querySelector('.graphBody');
@@ -152,3 +150,4 @@ function offPeakWidget(offPeakUsed, offPeakTotal, offPeakRemain, validTill) {
 
     graphBody.insertAdjacentHTML('beforeend', htmlString);
 }
+
