@@ -19,6 +19,12 @@ let checkInterval = setInterval(function () {
 
         console.log(usage);
 
+        //peakWidget
+        quota(
+            usage.peak.dailyQuota,
+            usage.peak.currentDailyQuota,
+            usage.peak.remainDailyQuota)
+
         //offPeakWidget
         offPeakWidget(
             usage.offPeak.used,
@@ -164,4 +170,25 @@ function offPeakWidget(offPeakUsed, offPeakTotal, offPeakRemain, validTill) {
 
     graphBody.insertAdjacentHTML('beforeend', htmlString);
 }
+
+function quota(dailyQuota, currentDailyQuota, remainDailyQuota) {
+
+    let slide =   document.querySelector('li.slide.selected');
+
+
+    let htmlString = `
+    <div class="offPeakQ" id="offPeakQ" style="">
+                                <h6>Standard</h6>
+                                <p>
+                                    Average daily quota: <strong>${dailyQuota}</strong><br>
+                                    Current average usage: <strong>${currentDailyQuota}</strong><br>
+                                    Usage for remaining days: <strong>${remainDailyQuota}</strong>
+                                </p>
+                                <hr>
+    </div>`;
+
+    slide.insertAdjacentHTML('beforeend', htmlString);
+}
+
+
 
