@@ -20,6 +20,9 @@
       "js": [
         "contentScript.js",
         "utils.js"
+      ],
+      "css": [
+        "contentScript.css"
       ]
     }
   ]

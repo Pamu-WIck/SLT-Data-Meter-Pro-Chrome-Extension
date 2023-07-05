@@ -3,6 +3,8 @@ let checkInterval = setInterval(function () {
     const fullElement = document.querySelector('li.slide:not(.selected) .used-of');
     const validTillElement = document.querySelector('li.slide.selected .text-center.blue');
 
+
+
     if (!peakElement || !fullElement || !validTillElement) {
         console.log('One or more elements could not be found, retrying...');
     } else {
@@ -124,7 +126,8 @@ function offPeakWidget(offPeakUsed, offPeakTotal, offPeakRemain, validTill) {
     let strokeDashOffset =  ratio * 628.3185307179587;
 
 
-    let htmlString = `<li class="slide selected">
+    let htmlString = `
+<li class="nightBar">
     <div class=" m-auto" style="width: 100%;">
         <div class="text-center">
             <div class="name">Night</div>
@@ -146,6 +149,17 @@ function offPeakWidget(offPeakUsed, offPeakTotal, offPeakRemain, validTill) {
             <div class="used-of">${offPeakUsed} GB USED OF ${offPeakTotal} GB</div>
             <p class="text-center blue">(Valid Till : ${validTill})</p></div>
     </div>
+    
+    <div class="offPeakQ" id="offPeakQ" style="">
+                                <h6>Night</h6>
+                                <p>
+                                    Average daily quota: <strong>0.6GB</strong><br>
+                                    Current average usage: <strong>0.6GB</strong><br>
+                                    Usage for remaining days: <strong>0.6GB</strong>
+                                </p>
+                                <hr>
+    </div>
+    
 </li>`;
 
     graphBody.insertAdjacentHTML('beforeend', htmlString);
