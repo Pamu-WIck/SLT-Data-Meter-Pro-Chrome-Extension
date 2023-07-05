@@ -3,3 +3,7 @@
     justify-content: flex-start;
     align-items: flex-start;
 }
+
+.m-auto{
+    margin: auto;
+}

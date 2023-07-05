@@ -128,7 +128,7 @@ function offPeakWidget(offPeakUsed, offPeakTotal, offPeakRemain, validTill) {
 
     let htmlString = `
 <li class="nightBar">
-    <div class=" m-auto" style="width: 100%;">
+    <div class=" m-auto">
         <div class="text-center">
             <div class="name">Night</div>
             <div class="progress-bar-container">
