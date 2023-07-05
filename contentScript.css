@@ -1,9 +1,23 @@
 .nightBar {
     display: flex;
+    flex-flow: row !important;
     justify-content: flex-start;
     align-items: flex-start;
 }
 
 .m-auto{
+    flex: 0 0 50%;
     margin: auto;
+
+}
+
+.slide.selected {
+    display: flex;
+    flex-flow: row !important;
+    justify-content: flex-start;
+    align-items: flex-start;
+}
+
+.slide {
+    text-align: left !important;
 }
