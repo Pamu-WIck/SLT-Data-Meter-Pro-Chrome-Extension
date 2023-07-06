@@ -30,11 +30,11 @@ let checkInterval = setInterval(function () {
     }
 }, 1000);  // Check every 1000 milliseconds = 1 second
 
-// Stop checking after 20 seconds in case of Element not found
+// Stop checking after 30 seconds in case of Element not found
 setTimeout(function() {
     clearInterval(checkInterval);
     console.log('Timeout: Interval stopped after 20 seconds');
-}, 20000);
+}, 30000);
 
 // Calculation for peak and off-peak
 function calculateUsage(peakUsed, peakTotal, fullUsed, fullTotal, validTill) {
