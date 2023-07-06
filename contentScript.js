@@ -3,29 +3,21 @@ let checkInterval = setInterval(function () {
     const fullElement = document.querySelector('li.slide:not(.selected) .used-of');
     const validTillElement = document.querySelector('li.slide.selected .text-center.blue');
 
-
-
     if (!peakElement || !fullElement || !validTillElement) {
         console.log('One or more elements could not be found, retrying...');
     } else {
         clearInterval(checkInterval);  // Stop checking when the elements are found
 
-        let [peakUsed, peakTotal] = peakElement.textContent.split(" USED OF ").map(parseFloat);
-        let [fullUsed, fullTotal] = fullElement.textContent.split(" USED OF ").map(parseFloat);
-        let validTill = validTillElement.textContent.split(" : ")[1].split(")")[0];
+        const [peakUsed, peakTotal] = peakElement.textContent.split(" USED OF ").map(parseFloat);
+        const [fullUsed, fullTotal] = fullElement.textContent.split(" USED OF ").map(parseFloat);
+        const validTill = validTillElement.textContent.split(" : ")[1].split(")")[0];
 
-        console.log(peakUsed, peakTotal, fullUsed, fullTotal, validTill);
-        let usage = usageCal(peakUsed, peakTotal, fullUsed, fullTotal, validTill);
+        const usage = calculateUsage(peakUsed, peakTotal, fullUsed, fullTotal, validTill);
 
-        console.log(usage);
+        // peakWidget
+        peakQuota(usage.peak.dailyQuota, usage.peak.currentDailyQuota, usage.peak.remainDailyQuota);
 
-        //peakWidget
-        peakQuota(
-            usage.peak.dailyQuota,
-            usage.peak.currentDailyQuota,
-            usage.peak.remainDailyQuota)
-
-        //offPeakWidget
+        // offPeakWidget
         offPeakWidget(
             usage.offPeak.used,
             usage.offPeak.total,
@@ -33,9 +25,10 @@ let checkInterval = setInterval(function () {
             usage.offPeak.dailyQuota,
             usage.offPeak.currentDailyQuota,
             usage.offPeak.remainDailyQuota,
-            usage.validTill)
+            usage.validTill
+        );
     }
-}, 1000, );  // Check every 1000 milliseconds = 1 second
+}, 1000);  // Check every 1000 milliseconds = 1 second
 
 // Stop checking after 20 seconds in case of Element not found
 setTimeout(function() {
@@ -43,10 +36,9 @@ setTimeout(function() {
     console.log('Timeout: Interval stopped after 20 seconds');
 }, 20000);
 
-//calculation for peak and off-peak
-function usageCal(peakUsed, peakTotal, fullUsed, fullTotal, validTill) {
+// Calculation for peak and off-peak
+function calculateUsage(peakUsed, peakTotal, fullUsed, fullTotal, validTill) {
     const peakRemain = peakTotal - peakUsed;
-
     const offPeakTotal = fullTotal - peakTotal;
     const offPeakUsed = (fullUsed - peakUsed).toFixed(1);
     const offPeakRemain = offPeakTotal - offPeakUsed;
@@ -54,25 +46,25 @@ function usageCal(peakUsed, peakTotal, fullUsed, fullTotal, validTill) {
     const calculateRemainPercent = (remain, total) => Math.round((remain / total) * 100);
     const calculateDailyQuota = (total) => (total / 30).toFixed(1);
 
-    const DaysCount = (validTill) => {
-        let [day, month] = validTill.split('-');
-        let monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep',
+    const daysCount = (validTill) => {
+        const [day, month] = validTill.split('-');
+        const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep',
             'Oct', 'Nov', 'Dec'];
-        let monthNumber = monthNames.indexOf(month) + 1;
-        let currentYear = new Date().getFullYear();
-        let validTillDate = new Date(`${currentYear}-${monthNumber}-${day}`);
+        const monthNumber = monthNames.indexOf(month) + 1;
+        const currentYear = new Date().getFullYear();
+        const validTillDate = new Date(`${currentYear}-${monthNumber}-${day}`);
         validTillDate.setHours(0, 0, 0, 0);  // set time to the start of the day
 
-        let currentDate = new Date();
+        const currentDate = new Date();
         currentDate.setHours(0, 0, 0, 0);  // set time to the start of the day
 
-        let startDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1); // set date to the start of the current month
+        const startDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1); // set date to the start of the current month
 
-        let differenceInTime = validTillDate.getTime() - currentDate.getTime();
-        let differenceInDays = differenceInTime / (1000 * 3600 * 24); // remaining days
+        const differenceInTime = validTillDate.getTime() - currentDate.getTime();
+        const differenceInDays = differenceInTime / (1000 * 3600 * 24); // remaining days
 
-        let pastTime = currentDate.getTime() - startDate.getTime();
-        let pastDays = pastTime / (1000 * 3600 * 24) + 1; // passed days
+        const pastTime = currentDate.getTime() - startDate.getTime();
+        const pastDays = pastTime / (1000 * 3600 * 24) + 1; // passed days
 
         return {
             remainingDays: Math.ceil(differenceInDays),
@@ -80,13 +72,12 @@ function usageCal(peakUsed, peakTotal, fullUsed, fullTotal, validTill) {
         };
     }
 
-    let remainingDays = DaysCount(validTill).remainingDays;
-    let passedDays = DaysCount(validTill).passedDays;
+    const remainingDays = daysCount(validTill).remainingDays;
+    const passedDays = daysCount(validTill).passedDays;
 
-    let DailyQuota = (data, days) => {
+    const dailyQuota = (data, days) => {
         return (data / days).toFixed(1);
     }
-
 
     return {
         peak: {
@@ -95,18 +86,17 @@ function usageCal(peakUsed, peakTotal, fullUsed, fullTotal, validTill) {
             remain: peakRemain,
             remainPercent: calculateRemainPercent(peakRemain, peakTotal),
             dailyQuota: calculateDailyQuota(peakTotal),
-            currentDailyQuota: DailyQuota(peakUsed, passedDays),
-            remainDailyQuota: DailyQuota(peakRemain, remainingDays)
+            currentDailyQuota: dailyQuota(peakUsed, passedDays),
+            remainDailyQuota: dailyQuota(peakRemain, remainingDays)
         },
         offPeak: {
-
             used: offPeakUsed,
             total: offPeakTotal,
             remain: offPeakRemain,
             remainPercent: calculateRemainPercent(offPeakRemain, offPeakTotal),
             dailyQuota: calculateDailyQuota(offPeakTotal),
-            currentDailyQuota: DailyQuota(offPeakUsed, passedDays),
-            remainDailyQuota: DailyQuota(offPeakRemain, remainingDays)
+            currentDailyQuota: dailyQuota(offPeakUsed, passedDays),
+            remainDailyQuota: dailyQuota(offPeakRemain, remainingDays)
         },
         total: {
             used: fullUsed,
@@ -114,82 +104,73 @@ function usageCal(peakUsed, peakTotal, fullUsed, fullTotal, validTill) {
             remain: fullTotal - fullUsed,
             remainPercent: calculateRemainPercent(fullTotal - fullUsed, fullTotal),
             dailyQuota: calculateDailyQuota(fullTotal),
-            currentDailyQuota: DailyQuota(fullUsed, passedDays),
-            remainDailyQuota: DailyQuota(fullTotal - fullUsed, remainingDays)
+            currentDailyQuota: dailyQuota(fullUsed, passedDays),
+            remainDailyQuota: dailyQuota(fullTotal - fullUsed, remainingDays)
         },
-
         validTill: validTill,
-        remainDays: DaysCount(validTill)
+        remainDays: daysCount(validTill)
     };
 }
 
-
-//widget for offPeak
+// Widget for offPeak
 function offPeakWidget(offPeakUsed, offPeakTotal, offPeakRemain, dailyQuota, currentDailyQuota, remainDailyQuota, validTill) {
-
-    let graphBody = document.querySelector('.graphBody');
+    const graphBody = document.querySelector('.graphBody');
 
     // Calculate the ratio of remaining data to total data
-    let ratio = offPeakUsed / offPeakTotal;
-    console.log(ratio);
-    let strokeDashOffset =  ratio * 628.3185307179587;
+    const ratio = offPeakUsed / offPeakTotal;
+    const strokeDashOffset =  ratio * 628.3185307179587;
 
-
-    let htmlString = `
-<li class="nightBar">
-    <div class=" m-auto" style="width: 100%;">
-        <div class="text-center">
-            <div class="name">Night</div>
-            <div class="progress-bar-container">
-                <div class="RCP " style="position: relative; width: 240px;">
-                    <svg width="240" height="240" viewBox="0 0 240 240" style="transform: rotate(-90deg);">
-                        <circle cx="120" cy="120" r="100" fill="none" stroke="#3077b4" stroke-width="16"
-                                stroke-dasharray="628.3185307179587, 628.3185307179587" stroke-linecap="round"
-                                class="RCP__track" style="transition: all 0.3s ease 0s;"></circle>
-                        <circle cx="120" cy="120" r="100" fill="none" stroke="#3ccd6a" stroke-width="19"
-                                stroke-dasharray="628.3185307179587, 628.3185307179587"
-                                stroke-dashoffset="${strokeDashOffset}" stroke-linecap="round" class="RCP__progress"
-                                style="transition: all 0.3s ease 0s;"></circle>
-                    </svg>
-                    <div class="indicator"><p class="progress-count"> ${offPeakRemain} GB </p><p
-                        class="label"> REMAINING</p></div>
+    const htmlString = `
+        <li class="nightBar">
+            <div class="m-auto" style="width: 100%;">
+                <div class="text-center">
+                    <div class="name">Night</div>
+                    <div class="progress-bar-container">
+                        <div class="RCP" style="position: relative; width: 240px;">
+                            <svg width="240" height="240" viewBox="0 0 240 240" style="transform: rotate(-90deg);">
+                                <circle cx="120" cy="120" r="100" fill="none" stroke="#3077b4" stroke-width="16"
+                                    stroke-dasharray="628.3185307179587, 628.3185307179587" stroke-linecap="round"
+                                    class="RCP__track" style="transition: all 0.3s ease 0s;"></circle>
+                                <circle cx="120" cy="120" r="100" fill="none" stroke="#3ccd6a" stroke-width="19" stroke-dasharray="628.3185307179587, 628.3185307179587"
+                                    stroke-dashoffset="${strokeDashOffset}" stroke-linecap="round" class="RCP__progress"
+                                    style="transition: all 0.3s ease 0s;"></circle>
+                            </svg>
+                            <div class="indicator">
+                                <p class="progress-count">${offPeakRemain} GB</p>
+                                <p class="label">REMAINING</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="used-of">${offPeakUsed} GB USED OF ${offPeakTotal} GB</div>
+                    <p class="text-center blue">(Valid Till: ${validTill})</p>
                 </div>
             </div>
-            <div class="used-of">${offPeakUsed} GB USED OF ${offPeakTotal} GB</div>
-            <p class="text-center blue">(Valid Till : ${validTill})</p></div>
-    </div>
-    
-    <div class="offPeakQ" id="offPeakQ" style="">
-                                <B>Night</B>
-                                <p>
-                                    Average daily quota: ${dailyQuota} GB<br>
-                                    Current average usage: ${currentDailyQuota} GB<br>
-                                    Usage for remaining days: ${remainDailyQuota} GB
-                                </p>
-    </div>
-    
-</li>`;
+
+            <div class="offPeakQ" id="offPeakQ">
+                <h6>Night</h6>
+                <p>
+                    Average daily quota: <strong>${dailyQuota} GB</strong><br>
+                    Current average usage: <strong>${currentDailyQuota} GB</strong><br>
+                    Usage for remaining days: <strong>${remainDailyQuota} GB</strong>
+                </p>
+            </div>
+        </li>`;
 
     graphBody.insertAdjacentHTML('beforeend', htmlString);
 }
 
 function peakQuota(dailyQuota, currentDailyQuota, remainDailyQuota) {
+    const slide = document.querySelector('li.slide.selected');
 
-    let slide =   document.querySelector('li.slide.selected');
-
-
-    let htmlString = `
-    <div class="offPeakQ" id="offPeakQ" style="">
-                                <B>Standard</B>
-                                <p>
-                                    Average daily quota: ${dailyQuota} GB<br>
-                                    Current average usage: ${currentDailyQuota} GB<br>
-                                    Usage for remaining days: ${remainDailyQuota} GB
-                                </p>
-    </div>`;
+    const htmlString = `
+        <div class="offPeakQ" id="offPeakQ">
+            <h6>Standard</h6>
+            <p>
+                Average daily quota: <strong>${dailyQuota} GB</strong><br>
+                Current average usage: <strong>${currentDailyQuota} GB</strong><br>
+                Usage for remaining days: <strong>${remainDailyQuota} GB</strong>
+            </p>
+        </div>`;
 
     slide.insertAdjacentHTML('beforeend', htmlString);
 }
-
-
-
