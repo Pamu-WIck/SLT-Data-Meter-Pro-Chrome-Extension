@@ -52,7 +52,7 @@ function usageCal(peakUsed, peakTotal, fullUsed, fullTotal, validTill) {
     const offPeakRemain = offPeakTotal - offPeakUsed;
 
     const calculateRemainPercent = (remain, total) => Math.round((remain / total) * 100);
-    const calculateDailyQuota = (total) => total / 30;
+    const calculateDailyQuota = (total) => (total / 30).toFixed(1);
 
     const DaysCount = (validTill) => {
         let [day, month] = validTill.split('-');
