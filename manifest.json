@@ -18,8 +18,7 @@
         "*://myslt.slt.lk/boardBand/summary"
       ],
       "js": [
-        "contentScript.js",
-        "utils.js"
+        "contentScript.js"
       ],
       "css": [
         "contentScript.css"
