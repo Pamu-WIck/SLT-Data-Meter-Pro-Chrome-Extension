@@ -20,7 +20,7 @@ let checkInterval = setInterval(function () {
         console.log(usage);
 
         //peakWidget
-        quota(
+        peakQuota(
             usage.peak.dailyQuota,
             usage.peak.currentDailyQuota,
             usage.peak.remainDailyQuota)
@@ -30,6 +30,9 @@ let checkInterval = setInterval(function () {
             usage.offPeak.used,
             usage.offPeak.total,
             usage.offPeak.remain,
+            usage.offPeak.dailyQuota,
+            usage.offPeak.currentDailyQuota,
+            usage.offPeak.remainDailyQuota,
             usage.validTill)
     }
 }, 1000, );  // Check every 1000 milliseconds = 1 second
@@ -122,7 +125,7 @@ function usageCal(peakUsed, peakTotal, fullUsed, fullTotal, validTill) {
 
 
 //widget for offPeak
-function offPeakWidget(offPeakUsed, offPeakTotal, offPeakRemain, validTill) {
+function offPeakWidget(offPeakUsed, offPeakTotal, offPeakRemain, dailyQuota, currentDailyQuota, remainDailyQuota, validTill) {
 
     let graphBody = document.querySelector('.graphBody');
 
@@ -134,7 +137,7 @@ function offPeakWidget(offPeakUsed, offPeakTotal, offPeakRemain, validTill) {
 
     let htmlString = `
 <li class="nightBar">
-    <div class=" m-auto">
+    <div class=" m-auto" style="width: 100%;">
         <div class="text-center">
             <div class="name">Night</div>
             <div class="progress-bar-container">
@@ -157,13 +160,12 @@ function offPeakWidget(offPeakUsed, offPeakTotal, offPeakRemain, validTill) {
     </div>
     
     <div class="offPeakQ" id="offPeakQ" style="">
-                                <h6>Night</h6>
+                                <B>Night</B>
                                 <p>
-                                    Average daily quota: <strong>0.6GB</strong><br>
-                                    Current average usage: <strong>0.6GB</strong><br>
-                                    Usage for remaining days: <strong>0.6GB</strong>
+                                    Average daily quota: ${dailyQuota} GB<br>
+                                    Current average usage: ${currentDailyQuota} GB<br>
+                                    Usage for remaining days: ${remainDailyQuota} GB
                                 </p>
-                                <hr>
     </div>
     
 </li>`;
@@ -171,20 +173,19 @@ function offPeakWidget(offPeakUsed, offPeakTotal, offPeakRemain, validTill) {
     graphBody.insertAdjacentHTML('beforeend', htmlString);
 }
 
-function quota(dailyQuota, currentDailyQuota, remainDailyQuota) {
+function peakQuota(dailyQuota, currentDailyQuota, remainDailyQuota) {
 
     let slide =   document.querySelector('li.slide.selected');
 
 
     let htmlString = `
     <div class="offPeakQ" id="offPeakQ" style="">
-                                <h6>Standard</h6>
+                                <B>Standard</B>
                                 <p>
-                                    Average daily quota: <strong>${dailyQuota}</strong><br>
-                                    Current average usage: <strong>${currentDailyQuota}</strong><br>
-                                    Usage for remaining days: <strong>${remainDailyQuota}</strong>
+                                    Average daily quota: ${dailyQuota} GB<br>
+                                    Current average usage: ${currentDailyQuota} GB<br>
+                                    Usage for remaining days: ${remainDailyQuota} GB
                                 </p>
-                                <hr>
     </div>`;
 
     slide.insertAdjacentHTML('beforeend', htmlString);
