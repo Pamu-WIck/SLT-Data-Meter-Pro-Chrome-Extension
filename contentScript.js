@@ -41,7 +41,7 @@ function calculateUsage(peakUsed, peakTotal, fullUsed, fullTotal, validTill) {
     const peakRemain = peakTotal - peakUsed;
     const offPeakTotal = fullTotal - peakTotal;
     const offPeakUsed = (fullUsed - peakUsed).toFixed(1);
-    const offPeakRemain = offPeakTotal - offPeakUsed;
+    const offPeakRemain = (offPeakTotal - offPeakUsed).toFixed(1);
 
     const calculateRemainPercent = (remain, total) => Math.round((remain / total) * 100);
     const calculateDailyQuota = (total) => (total / 30).toFixed(1);
