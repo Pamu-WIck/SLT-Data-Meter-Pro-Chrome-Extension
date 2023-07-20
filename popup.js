@@ -156,13 +156,8 @@ function calculateUsage(usageSummery) {
         const currentDate = new Date();
         currentDate.setHours(0, 0, 0, 0);  // set time to the start of the day
 
-        const startDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), day); // set date to the start of the current month
-        startDate.setDate(startDate.getDate() + 1);
-
-        if (day >= 28){
-            startDate.setMonth(startDate.getMonth() - 1);
-            // console.log("True")
-        }
+        const startDate = new Date(validTillDate); // set date to the start of the current month
+        startDate.setMonth(startDate.getMonth() - 1);
 
         const differenceInTime = validTillDate.getTime() - currentDate.getTime();
         const differenceInDays = differenceInTime / (1000 * 3600 * 24); // remaining days
@@ -171,8 +166,8 @@ function calculateUsage(usageSummery) {
         const pastDays = pastTime / (1000 * 3600 * 24) + 1;
 
         return {
-            remainingDays: Math.ceil(differenceInDays),
-            passedDays: Math.ceil(pastDays)
+            passedDays: Math.ceil(pastDays),
+            remainingDays: Math.ceil(differenceInDays)
         };
     }
 
