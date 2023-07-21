@@ -1,5 +1,5 @@
-const uid = ``
-const pwd = ``;
+const uid = localStorage.getItem('uid')
+const pwd = localStorage.getItem('pwd')
 const channelID = 'WEB';
 
 const form = new URLSearchParams();
@@ -28,6 +28,8 @@ fetch("https://omniscapp.slt.lk/mobitelint/slt/api/Account/Login", {
 }).then(res => {
     return res.json()
 }).then(data => {
+    localStorage.setItem('accessToken', data.accessToken);
+    localStorage.setItem('uid', uid);
     return data.accessToken
 }).then(accessToken => {
     getAccountDetails(accessToken, uid)
@@ -35,6 +37,7 @@ fetch("https://omniscapp.slt.lk/mobitelint/slt/api/Account/Login", {
 
 
 async function getAccountDetails(accessToken, uid) {
+    console.log("getAccountDetails function called")
 
     fetch(`https://omniscapp.slt.lk/mobitelint/slt/api/AccountOMNI/GetAccountDetailRequest?username=${uid}`, {
         "headers": {
@@ -55,6 +58,7 @@ async function getAccountDetails(accessToken, uid) {
         "method": "GET"
     }).then(res => res.json()
         ).then(data => {
+            localStorage.setItem('telephoneNo', data.dataBundle[0].telephoneno);
         return data.dataBundle[0].telephoneno;
     }).then(telephoneNo => {
         getServiceDetails(accessToken, telephoneNo)
@@ -63,6 +67,8 @@ async function getAccountDetails(accessToken, uid) {
 }
 
 async function getServiceDetails(accessToken, telephoneNo) {
+    console.log("getServiceDetails function called")
+
     fetch(`https://omniscapp.slt.lk/mobitelint/slt/api/AccountOMNI/GetServiceDetailRequest?telephoneNo=${telephoneNo}`, {
         "headers": {
             "accept": "application/json, text/plain, */*",
@@ -83,15 +89,20 @@ async function getServiceDetails(accessToken, telephoneNo) {
     })
         .then(res => res.json()
             .then(data => {
+                localStorage.setItem('serviceID', data.dataBundle.listofBBService[0].serviceID);
                 return data.dataBundle.listofBBService[0].serviceID;
             }).then(serviceId => {
-                getUsageSummery(serviceId, accessToken)
+                let sid = localStorage.getItem('serviceID');
+                let accTkn = localStorage.getItem('accessToken');
+                getUsageSummery(sid, accTkn)
             })
         )
     ;
 }
 
 async function getUsageSummery(serviceID,accessToken) {
+
+    console.log("getUsageSummery function called")
     fetch(`https://omniscapp.slt.lk/mobitelint/slt/api/BBVAS/UsageSummary?subscriberID=${serviceID}`, {
         "headers": {
             "accept": "application/json, text/plain, */*",
@@ -119,6 +130,7 @@ async function getUsageSummery(serviceID,accessToken) {
 
 function calculateUsage(usageSummery) {
 
+    console.log("calculateUsage function called")
     usageSummeryJson = JSON.parse(usageSummery);
 
     peak = usageSummeryJson.dataBundle.my_package_info.usageDetails[0];
@@ -171,9 +183,9 @@ function calculateUsage(usageSummery) {
         };
     }
 
-    const x = daysCount(validTill);
-    const remainingDays = x.remainingDays;
-    const passedDays = x.passedDays;
+    const dc = daysCount(validTill);
+    const remainingDays = dc.remainingDays;
+    const passedDays = dc.passedDays;
 
     const dailyQuota = (data, days) => {
         return (data / days).toFixed(1);
@@ -208,7 +220,9 @@ function calculateUsage(usageSummery) {
             remainDailyQuota: dailyQuota(fullLimit - fullUsed, remainingDays)
         },
         validTill: validTill,
+        passedDays: passedDays,
         remainDays: remainingDays,
+
     };
 
 }
