@@ -86,62 +86,73 @@ async function getAccountDetails(accessToken, uid) {
 async function getServiceDetails(accessToken, telephoneNo) {
     console.log("getServiceDetails function called")
 
-    fetch(`https://omniscapp.slt.lk/mobitelint/slt/api/AccountOMNI/GetServiceDetailRequest?telephoneNo=${telephoneNo}`, {
-        "headers": {
-            "accept": "application/json, text/plain, */*",
-            "accept-language": "en-US,en;q=0.9",
-            "authorization": `bearer ${accessToken}`,
-            "sec-ch-ua": "\"Chromium\";v=\"116\", \"Not)A;Brand\";v=\"24\", \"Google Chrome\";v=\"116\"",
-            "sec-ch-ua-mobile": "?0",
-            "sec-ch-ua-platform": "\"Windows\"",
-            "sec-fetch-dest": "empty",
-            "sec-fetch-mode": "cors",
-            "sec-fetch-site": "same-site",
-            "x-ibm-client-id": "41aed706-8fdf-4b1e-883e-91e44d7f379b",
-            "Referer": "https://myslt.slt.lk/",
-            "Referrer-Policy": "strict-origin-when-cross-origin"
-        },
-        "body": null,
-        "method": "GET"
-    })
-        .then(res => res.json()
-        ).then(data => {
-        localStorage.setItem('serviceID', data.dataBundle.listofBBService[0].serviceID);
-    }).then(() => {
-            sid = localStorage.getItem('serviceID');
-            accTkn = localStorage.getItem('accessToken');
-            getUsageSummery(sid, accTkn);
+    try {
+        const response = await fetch(`https://omniscapp.slt.lk/mobitelint/slt/api/AccountOMNI/GetServiceDetailRequest?telephoneNo=${telephoneNo}`, {
+            "headers": {
+                "accept": "application/json, text/plain, */*",
+                "accept-language": "en-US,en;q=0.9",
+                "authorization": `bearer ${accessToken}`,
+                "sec-ch-ua": "\"Chromium\";v=\"116\", \"Not)A;Brand\";v=\"24\", \"Google Chrome\";v=\"116\"",
+                "sec-ch-ua-mobile": "?0",
+                "sec-ch-ua-platform": "\"Windows\"",
+                "sec-fetch-dest": "empty",
+                "sec-fetch-mode": "cors",
+                "sec-fetch-site": "same-site",
+                "x-ibm-client-id": "41aed706-8fdf-4b1e-883e-91e44d7f379b",
+                "Referer": "https://myslt.slt.lk/",
+                "Referrer-Policy": "strict-origin-when-cross-origin"
+            },
+            "body": null,
+            "method": "GET"
+        });
+        if (!response.ok) {
+            throw new Error('token expired');
         }
-    )
-    ;
+
+        const data = await response.json();
+        const serviceID = data.dataBundle.listofBBService[0].serviceID;
+        localStorage.setItem('serviceID', serviceID);
+        getUsageSummery(serviceID, accessToken);
+    } catch (error) {
+        login()
+    }
 }
 
 async function getUsageSummery(serviceID, accessToken) {
 
     console.log("getUsageSummery function called")
-    fetch(`https://omniscapp.slt.lk/mobitelint/slt/api/BBVAS/UsageSummary?subscriberID=${serviceID}`, {
-        "headers": {
-            "accept": "application/json, text/plain, */*",
-            "accept-language": "en-US,en;q=0.9",
-            "authorization": `bearer ${accessToken}`,
-            "sec-ch-ua": "\"Chromium\";v=\"116\", \"Not)A;Brand\";v=\"24\", \"Google Chrome\";v=\"116\"",
-            "sec-ch-ua-mobile": "?0",
-            "sec-ch-ua-platform": "\"Windows\"",
-            "sec-fetch-dest": "empty",
-            "sec-fetch-mode": "cors",
-            "sec-fetch-site": "same-site",
-            "x-ibm-client-id": "41aed706-8fdf-4b1e-883e-91e44d7f379b",
-            "Referer": "https://myslt.slt.lk/",
-            "Referrer-Policy": "strict-origin-when-cross-origin"
-        },
-        "body": null,
-        "method": "GET"
-    }).then(
-        res => res.json()
-    ).then(data => {
-            data = JSON.stringify(data);
-            console.log(calculateUsage(data));
+
+    try {
+        const response = await fetch(`https://omniscapp.slt.lk/mobitelint/slt/api/BBVAS/UsageSummary?subscriberID=${serviceID}`, {
+            "headers": {
+                "accept": "application/json, text/plain, */*",
+                "accept-language": "en-US,en;q=0.9",
+                "authorization": `bearer ${accessToken}`,
+                "sec-ch-ua": "\"Chromium\";v=\"116\", \"Not)A;Brand\";v=\"24\", \"Google Chrome\";v=\"116\"",
+                "sec-ch-ua-mobile": "?0",
+                "sec-ch-ua-platform": "\"Windows\"",
+                "sec-fetch-dest": "empty",
+                "sec-fetch-mode": "cors",
+                "sec-fetch-site": "same-site",
+                "x-ibm-client-id": "41aed706-8fdf-4b1e-883e-91e44d7f379b",
+                "Referer": "https://myslt.slt.lk/",
+                "Referrer-Policy": "strict-origin-when-cross-origin"
+            },
+            "body": null,
+            "method": "GET"
+        });
+
+        if (!response.ok) {
+            throw new Error('token expired');
         }
-    )
+
+        const data = await response.json();
+        const usageSummery = JSON.stringify(data);
+        const usage = calculateUsage(usageSummery);
+        console.log(usage);
+    } catch (error) {
+        console.log(error);
+        login()
+    }
 }
 

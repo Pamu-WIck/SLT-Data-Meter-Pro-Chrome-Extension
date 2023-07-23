@@ -27,6 +27,9 @@ export function calculateUsage(usageSummery) {
     const calculateDailyQuota = (total) => (total / 30).toFixed(1);
 
     const daysCount = (validTill) => {
+
+        console.log("daysCount function called")
+
         const [day, month] = validTill.split('-');
         const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep',
             'Oct', 'Nov', 'Dec'];
