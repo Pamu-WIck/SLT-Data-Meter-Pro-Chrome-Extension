@@ -9,34 +9,48 @@ form.append('username', uid);
 form.append('password', pwd);
 form.append('channelID', channelID);
 
+let sid;
+let accTkn;
 
-fetch("https://omniscapp.slt.lk/mobitelint/slt/api/Account/Login", {
-    headers: {
-        "accept": "application/json, text/plain, */*",
-        "accept-language": "en-US,en;q=0.9",
-        "content-type": "application/x-www-form-urlencoded",
-        "sec-ch-ua": "\"Chromium\";v=\"116\", \"Not)A;Brand\";v=\"24\", \"Google Chrome\";v=\"116\"",
-        "sec-ch-ua-mobile": "?0",
-        "sec-ch-ua-platform": "\"Windows\"",
-        "sec-fetch-dest": "empty",
-        "sec-fetch-mode": "cors",
-        "sec-fetch-site": "same-site",
-        "x-ibm-client-id": "41aed706-8fdf-4b1e-883e-91e44d7f379b",
-        "Referer": "https://myslt.slt.lk/",
-        "Referrer-Policy": "strict-origin-when-cross-origin"
-    },
-    body: form,
-    method: "POST"
-}).then(res => {
-    return res.json()
-}).then(data => {
-    localStorage.setItem('accessToken', data.accessToken);
-    localStorage.setItem('uid', uid);
-    return data.accessToken
-}).then(accessToken => {
-    getAccountDetails(accessToken, uid)
-})
+if (localStorage.getItem('serviceID') === null ||
+    localStorage.getItem('accessToken') === null) {
+    login();
+} else {
+    sid = localStorage.getItem('serviceID');
+    accTkn = localStorage.getItem('accessToken');
+    getUsageSummery(sid, accTkn);
+}
 
+async function login() {
+    console.log("login function called")
+
+    fetch("https://omniscapp.slt.lk/mobitelint/slt/api/Account/Login", {
+        headers: {
+            "accept": "application/json, text/plain, */*",
+            "accept-language": "en-US,en;q=0.9",
+            "content-type": "application/x-www-form-urlencoded",
+            "sec-ch-ua": "\"Chromium\";v=\"116\", \"Not)A;Brand\";v=\"24\", \"Google Chrome\";v=\"116\"",
+            "sec-ch-ua-mobile": "?0",
+            "sec-ch-ua-platform": "\"Windows\"",
+            "sec-fetch-dest": "empty",
+            "sec-fetch-mode": "cors",
+            "sec-fetch-site": "same-site",
+            "x-ibm-client-id": "41aed706-8fdf-4b1e-883e-91e44d7f379b",
+            "Referer": "https://myslt.slt.lk/",
+            "Referrer-Policy": "strict-origin-when-cross-origin"
+        },
+        body: form,
+        method: "POST"
+    }).then(res => {
+        return res.json()
+    }).then(data => {
+        localStorage.setItem('accessToken', data.accessToken);
+        // localStorage.setItem('uid', uid);
+        return data.accessToken
+    }).then(accessToken => {
+        getAccountDetails(accessToken, uid)
+    })
+}
 
 async function getAccountDetails(accessToken, uid) {
     console.log("getAccountDetails function called")
@@ -92,11 +106,6 @@ async function getServiceDetails(accessToken, telephoneNo) {
         .then(res => res.json()
             .then(data => {
                 localStorage.setItem('serviceID', data.dataBundle.listofBBService[0].serviceID);
-                return data.dataBundle.listofBBService[0].serviceID;
-            }).then(serviceId => {
-                let sid = localStorage.getItem('serviceID');
-                let accTkn = localStorage.getItem('accessToken');
-                getUsageSummery(sid, accTkn)
             })
         )
     ;
@@ -188,7 +197,7 @@ function calculateUsage(usageSummery) {
         total: {
             used: fullUsed,
             total: fullLimit,
-            remain: fullLimit - fullUsed,
+            remain: fullRemain,
             percentage: 100 - fullPercentage,
             dailyQuota: calculateDailyQuota(fullLimit),
             currentDailyQuota: dailyQuota(fullUsed, passedDays),
