@@ -76,15 +76,17 @@ async function getAccountDetails(accessToken, uid) {
     }).then(res => res.json()
     ).then(data => {
         localStorage.setItem('telephoneNo', data.dataBundle[0].telephoneno);
-        return data.dataBundle[0].telephoneno;
     }).then(telephoneNo => {
-        getServiceDetails(accessToken, telephoneNo)
+        getServiceDetails()
     })
 
 }
 
-async function getServiceDetails(accessToken, telephoneNo) {
+async function getServiceDetails() {
     console.log("getServiceDetails function called")
+
+    let accessToken = localStorage.getItem('accessToken');
+    let telephoneNo = localStorage.getItem('telephoneNo');
 
     try {
         const response = await fetch(`https://omniscapp.slt.lk/mobitelint/slt/api/AccountOMNI/GetServiceDetailRequest?telephoneNo=${telephoneNo}`, {
@@ -114,13 +116,17 @@ async function getServiceDetails(accessToken, telephoneNo) {
         localStorage.setItem('serviceID', serviceID);
         getUsageSummery(serviceID, accessToken);
     } catch (error) {
+        console.log(error);
         login()
     }
 }
 
-async function getUsageSummery(serviceID, accessToken) {
+async function getUsageSummery() {
 
     console.log("getUsageSummery function called")
+
+    let accessToken = localStorage.getItem('accessToken');
+    let serviceID = localStorage.getItem('serviceID');
 
     try {
         const response = await fetch(`https://omniscapp.slt.lk/mobitelint/slt/api/BBVAS/UsageSummary?subscriberID=${serviceID}`, {
