@@ -1,14 +1,6 @@
 import {calculateUsage} from './calculateUsage.js';
 
-
-const uid = localStorage.getItem('uid')
-const pwd = localStorage.getItem('pwd')
-const channelID = 'WEB';
-
-const form = new URLSearchParams();
-form.append('username', uid);
-form.append('password', pwd);
-form.append('channelID', channelID);
+document.getElementById("login").addEventListener("click", login);
 
 let sid;
 let accTkn;
@@ -24,6 +16,25 @@ if (localStorage.getItem('serviceID') === null ||
 
 async function login() {
     console.log("login function called")
+
+    const uid = document.getElementById("uid").value;
+    const pwd = document.getElementById("pwd").value;
+    const channelID = 'WEB';
+
+    console.log(uid, pwd, channelID)
+
+    const hideElement = () => {
+        const loginElement = document.getElementById("login");
+        loginElement.classList.add("d-none");
+    }
+
+    hideElement();
+
+    const form = new URLSearchParams();
+    form.append('username', uid);
+    form.append('password', pwd);
+    form.append('channelID', channelID);
+
 
     fetch("https://omniscapp.slt.lk/mobitelint/slt/api/Account/Login", {
         headers: {

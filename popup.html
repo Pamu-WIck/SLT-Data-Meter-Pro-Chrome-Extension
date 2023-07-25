@@ -1,12 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link rel="stylesheet"
+          type="text/css"
+          href="bootstrap.min.css" />
     <script type="module" src="calculateUsage.js"></script>
     <script type="module" src="popup.js"></script>
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
 <body>
+<div id="login" class="container">
+    <form>
+        <label for="uid">Name:</label>
+        <input type="text" id="uid" name="uid"><br><br>
+        <label for="pwd">Password:</label>
+        <input type="password" id="pwd" name="pwd"><br>
+        <button type="button" id="btnLogin">Submit</button>
+    </form>
+</div>
 
+<script src="bootstrap.min.js"></script>
 </body>
 </html>
