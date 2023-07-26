@@ -23,12 +23,12 @@ async function login() {
 
     console.log(uid, pwd, channelID)
 
-    const hideElement = () => {
-        const loginElement = document.getElementById("login");
-        loginElement.classList.add("d-none");
-    }
+    // const hideElement = () => {
+    //     const loginElement = document.getElementById("login");
+    //     loginElement.classList.add("d-none");
+    // }
 
-    hideElement();
+    // hideElement();
 
     const form = new URLSearchParams();
     form.append('username', uid);
@@ -172,4 +172,6 @@ async function getUsageSummery() {
         login()
     }
 }
+
+
 

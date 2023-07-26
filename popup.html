@@ -1,25 +1,38 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link rel="stylesheet"
-          type="text/css"
-          href="bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="boostrap/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="popup.css" />
     <script type="module" src="calculateUsage.js"></script>
     <script type="module" src="popup.js"></script>
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
-<body>
+<body class="bg-dark vertical-center">
+
+<div class="container">
+    <div class="horizontal-center">
+            <img src="assets/icon48.png" alt="SLT Logo" class="img-fluid">
+    </div>
+<h1>
+    Welcome SLT User
+</h1>
+
+<p>
+    Please login to continue
+</p>
+
 <div id="login" class="container">
-    <form>
-        <label for="uid">Name:</label>
-        <input type="text" id="uid" name="uid"><br><br>
-        <label for="pwd">Password:</label>
-        <input type="password" id="pwd" name="pwd"><br>
-        <button type="button" id="btnLogin">Submit</button>
+    <form class="form">
+        <div class="row">
+            <input type="text" class="form-control  rounded-3" id="uid" name="uid" placeholder="Username"><br><br>
+            <input type="password" class="form-control rounded-3" id="pwd" name="pwd" placeholder="Password"><br>
+            <button type="button" class="rounded-3" id="btnLogin">Submit</button>
+        </div>
     </form>
 </div>
 
-<script src="bootstrap.min.js"></script>
+<script src="boostrap/bootstrap.js"></script>
+</div>
 </body>
 </html>
