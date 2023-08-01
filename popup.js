@@ -1,14 +1,17 @@
 import {calculateUsage} from './calculateUsage.js';
-
-document.getElementById("login").addEventListener("click", login);
+import {progressBar} from './widget.js';
 
 let sid;
 let accTkn;
 
 if (localStorage.getItem('serviceID') === null ||
     localStorage.getItem('accessToken') === null) {
-    login();
+    document.getElementById("meter").classList.add("d-none");
+
+    document.getElementById("btnLogin").addEventListener("click", login);
 } else {
+
+    document.getElementById("loginFrom").classList.add("d-none");
     sid = localStorage.getItem('serviceID');
     accTkn = localStorage.getItem('accessToken');
     getUsageSummery(sid, accTkn);
@@ -22,13 +25,6 @@ async function login() {
     const channelID = 'WEB';
 
     console.log(uid, pwd, channelID)
-
-    // const hideElement = () => {
-    //     const loginElement = document.getElementById("login");
-    //     loginElement.classList.add("d-none");
-    // }
-
-    // hideElement();
 
     const form = new URLSearchParams();
     form.append('username', uid);
@@ -57,7 +53,8 @@ async function login() {
         return res.json()
     }).then(data => {
         localStorage.setItem('accessToken', data.accessToken);
-        // localStorage.setItem('uid', uid);
+        document.getElementById("loginFrom").classList.add("d-none");
+        document.getElementById("meter").classList.remove("d-none");
         return data.accessToken
     }).then(accessToken => {
         getAccountDetails(accessToken, uid)
@@ -128,7 +125,7 @@ async function getServiceDetails() {
         getUsageSummery(serviceID, accessToken);
     } catch (error) {
         console.log(error);
-        login()
+        // login()
     }
 }
 
@@ -167,11 +164,14 @@ async function getUsageSummery() {
         const usageSummery = JSON.stringify(data);
         const usage = calculateUsage(usageSummery);
         console.log(usage);
+
+        progressBar("Total", "Total", usage.total);
+        progressBar("Standard", "Standard", usage.peak);
+        progressBar("Night", "Off-Peak", usage.offPeak);
     } catch (error) {
         console.log(error);
-        login()
+        // login()
     }
 }
-
 
 
