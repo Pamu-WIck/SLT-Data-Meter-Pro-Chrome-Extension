@@ -50,3 +50,44 @@ export function progressBar(id, dataType, summary) {
             </div>`;
 }
 
+
+export function vasBar(id, dataType, summary) {
+    const summaryWidget = document.getElementById(id);
+    const remainPercent = summary.percentage;
+
+    let htmlString = `<div">
+            <div class="progressAreaBG">
+                <div class="progressArea">
+                    <div class="row ">
+                        <div class="col">
+                            <div class="d-flex justify-content-start">
+                                <div class="progressBalance">${summary.used} GB</div>
+                            </div>
+                        </div>
+                        <div class="col ">
+                            <div class="d-flex justify-content-center">
+                                <div class="progressType">${dataType}</div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="d-flex justify-content-end">
+                                <div class="progressBalance">${summary.remain} GB</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <div class="progress">
+                                <div class="progress-bar " style="width: ${remainPercent}%;">${remainPercent}%</div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </div>`;
+
+    summaryWidget.insertAdjacentHTML('beforeend', htmlString);
+}
+
+

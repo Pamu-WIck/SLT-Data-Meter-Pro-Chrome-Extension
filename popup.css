@@ -206,6 +206,7 @@ button:hover {
     font-size: 15px;
     text-align: center;
     margin: 4% 0px;
+    white-space: nowrap;
 }
 
 

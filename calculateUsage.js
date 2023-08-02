@@ -48,7 +48,7 @@ export function calculateUsage(usageSummery) {
         const differenceInDays = differenceInTime / (1000 * 3600 * 24); // remaining days
 
         const pastTime = currentDate.getTime() - startDate.getTime();
-        const pastDays = pastTime / (1000 * 3600 * 24) + 1;
+        const pastDays = pastTime / (1000 * 3600 * 24);
 
         return {
             passedDays: Math.ceil(pastDays),
@@ -99,3 +99,4 @@ export function calculateUsage(usageSummery) {
     };
 
 }
+

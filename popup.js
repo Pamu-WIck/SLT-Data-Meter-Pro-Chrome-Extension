@@ -1,5 +1,5 @@
 import {calculateUsage} from './calculateUsage.js';
-import {progressBar} from './widget.js';
+import {progressBar, vasBar} from './widget.js';
 
 let sid;
 let accTkn;
@@ -14,7 +14,8 @@ if (localStorage.getItem('serviceID') === null ||
     document.getElementById("loginFrom").classList.add("d-none");
     sid = localStorage.getItem('serviceID');
     accTkn = localStorage.getItem('accessToken');
-    getUsageSummery(sid, accTkn);
+    getUsageSummary(accTkn, sid);
+    getVasSummary(accTkn, sid);
 }
 
 async function login() {
@@ -122,19 +123,16 @@ async function getServiceDetails() {
         const data = await response.json();
         const serviceID = data.dataBundle.listofBBService[0].serviceID;
         localStorage.setItem('serviceID', serviceID);
-        getUsageSummery(serviceID, accessToken);
+        getUsageSummary();
     } catch (error) {
         console.log(error);
-        // login()
+
     }
 }
 
-async function getUsageSummery() {
+async function getUsageSummary(accessToken, serviceID) {
 
-    console.log("getUsageSummery function called")
-
-    let accessToken = localStorage.getItem('accessToken');
-    let serviceID = localStorage.getItem('serviceID');
+    console.log("getUsageSummary function called")
 
     try {
         const response = await fetch(`https://omniscapp.slt.lk/mobitelint/slt/api/BBVAS/UsageSummary?subscriberID=${serviceID}`, {
@@ -161,8 +159,8 @@ async function getUsageSummery() {
         }
 
         const data = await response.json();
-        const usageSummery = JSON.stringify(data);
-        const usage = calculateUsage(usageSummery);
+        const usageSummary = JSON.stringify(data);
+        const usage = calculateUsage(usageSummary);
         console.log(usage);
 
         progressBar("Total", "Total", usage.total);
@@ -170,8 +168,56 @@ async function getUsageSummery() {
         progressBar("Night", "Off-Peak", usage.offPeak);
     } catch (error) {
         console.log(error);
-        // login()
     }
 }
 
+async function getVasSummary(accessToken, serviceID) {
+    console.log("getVasSummary function called")
 
+    try {
+        fetch(`https://omniscapp.slt.lk/mobitelint/slt/api/BBVAS/GetDashboardVASBundles?subscriberID=${serviceID}`, {
+            "headers": {
+                "accept": "application/json, text/plain, */*",
+                "accept-language": "en-US,en;q=0.9",
+                "authorization": `bearer ${accessToken}`,
+                "sec-ch-ua": "\"Google Chrome\";v=\"117\", \"Not;A=Brand\";v=\"8\", \"Chromium\";v=\"117\"",
+                "sec-ch-ua-mobile": "?0",
+                "sec-ch-ua-platform": "\"Windows\"",
+                "sec-fetch-dest": "empty",
+                "sec-fetch-mode": "cors",
+                "sec-fetch-site": "same-site",
+                "x-ibm-client-id": "41aed706-8fdf-4b1e-883e-91e44d7f379b"
+            },
+            "referrer": "https://myslt.slt.lk/",
+            "referrerPolicy": "strict-origin-when-cross-origin",
+            "body": null,
+            "method": "GET",
+            "mode": "cors",
+            "credentials": "include"
+        })
+            .then(res => res.json())
+            .then(data => {
+                console.log(data);
+                calculateVas(data);
+            })
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+function calculateVas(vasSummaryJson) {
+
+    let usageDetails = vasSummaryJson.dataBundle.usageDetails
+
+    usageDetails.forEach(element => {
+        let dataType = element.name;
+        let summary = {
+            used: element.used,
+            remain: element.remaining,
+            percentage: 100 - element.percentage,
+        }
+
+        vasBar('widgetBG', dataType, summary)
+
+    })
+}
