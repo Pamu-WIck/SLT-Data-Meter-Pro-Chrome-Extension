@@ -4,6 +4,8 @@ import {progressBar, vasBar} from './widget.js';
 let sid;
 let accTkn;
 
+document.getElementById("btnLogout").addEventListener("click", logOut);
+
 if (localStorage.getItem('serviceID') === null ||
     localStorage.getItem('accessToken') === null) {
     document.getElementById("meter").classList.add("d-none");
@@ -163,6 +165,7 @@ async function getUsageSummary(accessToken, serviceID) {
         const usage = calculateUsage(usageSummary);
         console.log(usage);
 
+        document.getElementById("packageName").innerHTML = usage.packageName;
         progressBar("Total", "Total", usage.total);
         progressBar("Standard", "Standard", usage.peak);
         progressBar("Night", "Off-Peak", usage.offPeak);
@@ -220,4 +223,11 @@ function calculateVas(vasSummaryJson) {
         vasBar('widgetBG', dataType, summary)
 
     })
+}
+
+async function logOut(){
+    console.log("logOut function called");
+    localStorage.clear();
+    document.getElementById("meter").classList.add("d-none");
+    document.getElementById("loginFrom").classList.remove("d-none");
 }

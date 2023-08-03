@@ -63,6 +63,16 @@ p {
     margin-top: 5%;
 }
 
+.packageName{
+    font-family: "Roboto Medium", "Arial", sans-serif;
+    font-weight: bold;
+    color: white;
+    font-size: 15px;
+    text-align: center;
+    margin-bottom: 10%;
+    margin-top: 5%;
+}
+
 .loginBG {
     background: #191337;
     border-radius: 10px;
@@ -149,26 +159,32 @@ button:hover {
 }
 
 
-/*.blink {*/
-/*    animation: blinker 1.5s linear infinite;*/
-/*}*/
+.blink {
+    animation: blinker 1.5s linear infinite;
+}
 
-/*@keyframes blinker {*/
-/*    50% {*/
-/*        opacity: 0;*/
-/*    }*/
-/*}*/
+@keyframes blinker {
+    50% {
+        opacity: 0;
+    }
+}
 
 .progressAreaBG{
     background: #1D212D;
     border-radius: 10px;
     padding: 10px 0px 0 0px;
     margin: 0px 30px 10px 30px;
+    scale: 100%;
+    transition: 0.3s;
 }
 
 .progressAreaBG:hover{
     background: #2F374A;
+    scale: 105%;
+    transition: 0.3s;
 }
+
+
 
 .progressArea{
     scale: 90%;
@@ -207,6 +223,29 @@ button:hover {
     text-align: center;
     margin: 4% 0px;
     white-space: nowrap;
+}
+
+.btnLogout {
+    margin-right: 20%;
+    margin-top: 5%;
+    opacity: 50%;
+    cursor: pointer;
+}
+
+.btnLogout:hover {
+    opacity: 100%;
+}
+
+.material-symbols-outlined {
+    color: white;
+    margin-right: 5%;
+    margin-bottom: 5%;
+     font-variation-settings:
+             'FILL' 0,
+             'wght' 400,
+             'GRAD' 0,
+             'opsz' 48
+
 }
 
 

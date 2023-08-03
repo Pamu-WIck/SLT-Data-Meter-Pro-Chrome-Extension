@@ -56,7 +56,7 @@ export function vasBar(id, dataType, summary) {
     const remainPercent = summary.percentage;
 
     let htmlString = `<div">
-            <div class="progressAreaBG">
+            <div class="progressAreaBG" style="padding-bottom: 3%">
                 <div class="progressArea">
                     <div class="row ">
                         <div class="col">

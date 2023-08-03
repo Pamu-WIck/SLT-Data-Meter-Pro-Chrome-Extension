@@ -3,6 +3,8 @@ export function calculateUsage(usageSummery) {
     console.log("calculateUsage function called")
     let usageSummeryJson = JSON.parse(usageSummery);
 
+    const packageName = usageSummeryJson.dataBundle.my_package_info.package_name;
+
     const peak = usageSummeryJson.dataBundle.my_package_info.usageDetails[0];
     const standard = usageSummeryJson.dataBundle.my_package_info.usageDetails[1];
 
@@ -65,6 +67,7 @@ export function calculateUsage(usageSummery) {
     }
 
     return {
+        packageName: packageName,
         peak: {
             used: peakUsed,
             total: peakLimit,
