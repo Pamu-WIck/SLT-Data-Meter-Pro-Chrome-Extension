@@ -2,6 +2,7 @@ body{
     min-width: 500px;
     max-width: 100%;
     min-height: auto;
+    height: auto;
     background: #181824;
 }
 
@@ -64,6 +65,7 @@ p {
 }
 
 .packageName{
+    white-space: nowrap;
     font-family: "Roboto Medium", "Arial", sans-serif;
     font-weight: bold;
     color: white;
@@ -240,12 +242,9 @@ button:hover {
     color: white;
     margin-right: 5%;
     margin-bottom: 5%;
-     font-variation-settings:
-             'FILL' 0,
-             'wght' 400,
-             'GRAD' 0,
-             'opsz' 48
-
 }
 
+.sltsvg {
+    width: 50%;
+}
 

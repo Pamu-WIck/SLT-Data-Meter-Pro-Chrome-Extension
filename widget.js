@@ -1,4 +1,6 @@
 export function progressBar(id, dataType, summary) {
+    console.log("progressBar function called")
+
     const summaryWidget = document.getElementById(id);
     const remainPercent = summary.percentage;
 
@@ -52,6 +54,8 @@ export function progressBar(id, dataType, summary) {
 
 
 export function vasBar(id, dataType, summary) {
+    console.log("vasBar function called")
+
     const summaryWidget = document.getElementById(id);
     const remainPercent = summary.percentage;
 

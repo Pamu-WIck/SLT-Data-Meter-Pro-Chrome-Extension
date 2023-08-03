@@ -5,14 +5,13 @@ let sid;
 let accTkn;
 
 document.getElementById("btnLogout").addEventListener("click", logOut);
+document.getElementById("btnLogin").addEventListener("click", login);
 
 if (localStorage.getItem('serviceID') === null ||
     localStorage.getItem('accessToken') === null) {
     document.getElementById("meter").classList.add("d-none");
 
-    document.getElementById("btnLogin").addEventListener("click", login);
 } else {
-
     document.getElementById("loginFrom").classList.add("d-none");
     sid = localStorage.getItem('serviceID');
     accTkn = localStorage.getItem('accessToken');
@@ -34,34 +33,37 @@ async function login() {
     form.append('password', pwd);
     form.append('channelID', channelID);
 
-
-    fetch("https://omniscapp.slt.lk/mobitelint/slt/api/Account/Login", {
-        headers: {
-            "accept": "application/json, text/plain, */*",
-            "accept-language": "en-US,en;q=0.9",
-            "content-type": "application/x-www-form-urlencoded",
-            "sec-ch-ua": "\"Chromium\";v=\"116\", \"Not)A;Brand\";v=\"24\", \"Google Chrome\";v=\"116\"",
-            "sec-ch-ua-mobile": "?0",
-            "sec-ch-ua-platform": "\"Windows\"",
-            "sec-fetch-dest": "empty",
-            "sec-fetch-mode": "cors",
-            "sec-fetch-site": "same-site",
-            "x-ibm-client-id": "41aed706-8fdf-4b1e-883e-91e44d7f379b",
-            "Referer": "https://myslt.slt.lk/",
-            "Referrer-Policy": "strict-origin-when-cross-origin"
-        },
-        body: form,
-        method: "POST"
-    }).then(res => {
-        return res.json()
-    }).then(data => {
-        localStorage.setItem('accessToken', data.accessToken);
-        document.getElementById("loginFrom").classList.add("d-none");
-        document.getElementById("meter").classList.remove("d-none");
-        return data.accessToken
-    }).then(accessToken => {
-        getAccountDetails(accessToken, uid)
-    })
+    try {
+        fetch("https://omniscapp.slt.lk/mobitelint/slt/api/Account/Login", {
+            headers: {
+                "accept": "application/json, text/plain, */*",
+                "accept-language": "en-US,en;q=0.9",
+                "content-type": "application/x-www-form-urlencoded",
+                "sec-ch-ua": "\"Chromium\";v=\"116\", \"Not)A;Brand\";v=\"24\", \"Google Chrome\";v=\"116\"",
+                "sec-ch-ua-mobile": "?0",
+                "sec-ch-ua-platform": "\"Windows\"",
+                "sec-fetch-dest": "empty",
+                "sec-fetch-mode": "cors",
+                "sec-fetch-site": "same-site",
+                "x-ibm-client-id": "41aed706-8fdf-4b1e-883e-91e44d7f379b",
+                "Referer": "https://myslt.slt.lk/",
+                "Referrer-Policy": "strict-origin-when-cross-origin"
+            },
+            body: form,
+            method: "POST"
+        }).then(res => {
+            return res.json()
+        }).then(data => {
+            localStorage.setItem('accessToken', data.accessToken);
+            document.getElementById("loginFrom").classList.add("d-none");
+            document.getElementById("meter").classList.remove("d-none");
+            return data.accessToken
+        }).then(accessToken => {
+            getAccountDetails(accessToken, uid)
+        })
+    } catch (error) {
+        console.log(error);
+    }
 }
 
 async function getAccountDetails(accessToken, uid) {
@@ -125,7 +127,8 @@ async function getServiceDetails() {
         const data = await response.json();
         const serviceID = data.dataBundle.listofBBService[0].serviceID;
         localStorage.setItem('serviceID', serviceID);
-        getUsageSummary();
+        getUsageSummary(accessToken, serviceID);
+        getVasSummary(accessToken, serviceID);
     } catch (error) {
         console.log(error);
 
@@ -166,6 +169,7 @@ async function getUsageSummary(accessToken, serviceID) {
         console.log(usage);
 
         document.getElementById("packageName").innerHTML = usage.packageName;
+        document.getElementById("packageName").classList.remove("blink");
         progressBar("Total", "Total", usage.total);
         progressBar("Standard", "Standard", usage.peak);
         progressBar("Night", "Off-Peak", usage.offPeak);
@@ -231,3 +235,6 @@ async function logOut(){
     document.getElementById("meter").classList.add("d-none");
     document.getElementById("loginFrom").classList.remove("d-none");
 }
+
+//todo fix error if wrong username or password
+

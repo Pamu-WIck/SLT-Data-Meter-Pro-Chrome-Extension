@@ -3,8 +3,6 @@
 <head>
     <link rel="stylesheet" type="text/css" href="boostrap/bootstrap.css"/>
     <link rel="stylesheet" type="text/css" href="popup.css"/>
-    <link rel="stylesheet"
-          href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"/>
     <script type="module" src="calculateUsage.js"></script>
     <script type="module" src="widget.js"></script>
     <script type="module" src="popup.js"></script>
@@ -31,8 +29,10 @@
     <div id="login" class=" loginBG ">
         <form class="form">
             <div class="row horizontal-center">
-                <input type="text" class="form-control" id="uid" name="uid" placeholder="Username" autocomplete=""><br><br>
-                <input type="password" class="form-control" id="pwd" name="pwd" placeholder="Password" autocomplete=""><br>
+                <input type="text" class="form-control" id="uid" name="uid" placeholder="Username"
+                       autocomplete=""><br><br>
+                <input type="password" class="form-control" id="pwd" name="pwd" placeholder="Password"
+                       autocomplete=""><br>
                 <button type="button" class="" id="btnLogin">Submit</button>
             </div>
         </form>
@@ -46,14 +46,38 @@
             <div class="col"></div>
             <div class="col">
                 <div class="d-flex justify-content-center">
-                    <div id="packageName" class="packageName">loading...
+                    <div class="row horizontal-center">
+                        <svg class="sltsvg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500">
+                            <path opacity="1.000000" stroke="none"
+                                  d="M 164.227 387.325 C 183.006 354.801 201.787 322.278 220.564 289.752 C 224.553 282.842 228.454 275.881 232.524 269.019 C 237.85 260.039 247.618 257.193 256.039 262.036 C 264.373 266.828 267.042 276.951 261.938 285.852 C 235.393 332.134 208.746 378.358 182.146 424.61 C 178.027 431.773 171.82 434.624 163.044 433.469 C 156.061 431.364 152.381 426.962 150.387 420.478 C 148.697 413.534 152.622 408.526 155.232 402.909 C 158.423 397.598 161.325 392.462 164.227 387.325 Z"
+                                  style="fill: rgb(255, 255, 255);"
+                                  transform="matrix(1, 0, 0, 1, 7.105427357601002e-15, 7.105427357601002e-15)"/>
+                            <path opacity="1.000000" stroke="none"
+                                  d="M 304.726 374.923 C 324.887 339.846 344.911 305.114 364.847 270.331 C 367.897 265.01 371.723 260.891 378.077 260.035 C 384.917 259.113 390.649 261.29 394.623 267.028 C 398.693 272.905 398.897 279.201 395.378 285.404 C 387.991 298.427 380.462 311.369 372.996 324.347 C 353.917 357.511 334.848 390.682 315.756 423.839 C 310.219 433.457 300.351 436.609 291.692 431.596 C 283.113 426.629 280.906 416.45 286.397 406.831 C 292.418 396.285 298.504 385.776 304.726 374.923 Z"
+                                  style="fill: rgb(255, 255, 255);"
+                                  transform="matrix(1, 0, 0, 1, 7.105427357601002e-15, 7.105427357601002e-15)"/>
+                            <path opacity="1.000000" stroke="none"
+                                  d="M 197.493 262.785 C 192.32 271.748 187.409 280.441 182.347 289.044 C 176.829 298.424 167.229 301.32 158.548 296.373 C 150.082 291.55 147.623 281.326 152.936 272.077 C 179.371 226.053 205.845 180.052 232.359 134.074 C 237.713 124.79 247.663 121.903 256.218 126.91 C 264.457 131.733 267.004 141.795 261.843 150.816 C 240.527 188.075 219.084 225.262 197.493 262.785 Z"
+                                  style="fill: rgb(255, 255, 255);"
+                                  transform="matrix(1, 0, 0, 1, 7.105427357601002e-15, 7.105427357601002e-15)"/>
+                            <path opacity="1.000000" stroke="none"
+                                  d="M 293.846 293.892 C 304.409 294.527 311.369 301.599 311.216 311.088 C 311.069 320.143 303.753 327.578 294.712 327.858 C 285.738 328.136 278.062 321.084 277.397 311.951 C 276.71 302.499 283.402 294.956 293.846 293.892 Z"
+                                  style="fill: rgb(255, 255, 255);"
+                                  transform="matrix(1, 0, 0, 1, 7.105427357601002e-15, 7.105427357601002e-15)"/>
+                        </svg>
+                        <div id="packageName" class="packageName blink">Loading...
+                        </div>
                     </div>
                 </div>
             </div>
             <div class="col">
                 <div class="d-flex justify-content-end">
                     <div id="btnLogout" class="btnLogout">
-                        <span class="material-symbols-outlined">logout</span>
+                        <span class="material-symbols-outlined">
+                            <svg xmlns="http://www.w3.org/2000/svg" height="25" viewBox="0 -960 960 960" width="48"><path
+                                    d="M180-120q-24 0-42-18t-18-42v-600q0-24 18-42t42-18h299v60H180v600h299v60H180Zm486-185-43-43 102-102H360v-60h363L621-612l43-43 176 176-174 174Z"
+                                    fill="white"/></svg>
+                        </span>
                     </div>
                 </div>
             </div>
