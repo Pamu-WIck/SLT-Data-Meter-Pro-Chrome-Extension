@@ -52,6 +52,11 @@ async function login() {
             body: form,
             method: "POST"
         }).then(res => {
+
+            if (!res.ok) {
+                document.getElementById("loginError").classList.remove("d-none");
+                throw new Error('Invalid credentials');
+            }
             return res.json()
         }).then(data => {
             localStorage.setItem('accessToken', data.accessToken);
@@ -62,7 +67,8 @@ async function login() {
             getAccountDetails(accessToken, uid)
         })
     } catch (error) {
-        console.log(error);
+        console.log("Error Message: ", error);
+
     }
 }
 
@@ -236,5 +242,5 @@ async function logOut(){
     document.getElementById("loginFrom").classList.remove("d-none");
 }
 
-//todo fix error if wrong username or password
+//todo popups on data usage
 
