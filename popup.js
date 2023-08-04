@@ -166,6 +166,7 @@ async function getUsageSummary(accessToken, serviceID) {
         });
 
         if (!response.ok) {
+            logOut();
             throw new Error('token expired');
         }
 

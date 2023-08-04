@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link rel="stylesheet" type="text/css" href="boostrap/bootstrap.css"/>
+    <link rel="stylesheet" type="text/css" href="boostrap/bootstrap.min.css"/>
     <link rel="stylesheet" type="text/css" href="popup.css"/>
     <script type="module" src="calculateUsage.js"></script>
     <script type="module" src="widget.js"></script>
@@ -29,12 +29,12 @@
     <p id="loginError" class="text-danger d-none">Wrong Email or Password</p>
 
     <div id="login" class=" loginBG ">
-        <form class="form">
+        <form class="form"  autocomplete=on>
             <div class="row horizontal-center">
                 <input type="text" class="form-control" id="uid" name="uid" placeholder="Username"
-                       autocomplete=""><br><br>
+                      autocomplete="on"><br><br>
                 <input type="password" class="form-control" id="pwd" name="pwd" placeholder="Password"
-                       autocomplete=""><br>
+                       autocomplete="on"><br>
                 <button type="button" class="" id="btnLogin">Submit</button>
             </div>
         </form>
@@ -91,7 +91,7 @@
                     <div class="row blink">
                         <div class="col">
                             <div class="d-flex justify-content-start">
-                                <div class="progressBalance">40.5 GB</div>
+                                <div class="progressBalance">Loading...</div>
                             </div>
                         </div>
                         <div class="col ">
@@ -145,7 +145,7 @@
                         </div>
                         <div class="col ">
                             <div class="d-flex justify-content-center">
-                                <div class="progressType">Total Data</div>
+                                <div class="progressType">Standard Data</div>
                             </div>
                         </div>
                         <div class="col">
@@ -194,7 +194,7 @@
                         </div>
                         <div class="col ">
                             <div class="d-flex justify-content-center">
-                                <div class="progressType">Total Data</div>
+                                <div class="progressType">Off-Peak Data</div>
                             </div>
                         </div>
                         <div class="col">
