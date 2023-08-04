@@ -243,4 +243,5 @@ async function logOut(){
 }
 
 //todo popups on data usage
+//todo change gradient when data is low
 
