@@ -44,7 +44,7 @@ Step 5 - load unpacked extension.
 
 ## Authors
 
-- [@octokatherine](https://github.com/Pamu-WIck)
+- [@Pamu_Wick](https://github.com/Pamu-WIck)
 
 
 ## 🛠 Skills
