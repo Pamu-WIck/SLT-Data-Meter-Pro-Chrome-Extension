@@ -6,7 +6,9 @@
     <script type="module" src="calculateUsage.js"></script>
     <script type="module" src="widget.js"></script>
     <script type="module" src="popup.js"></script>
+    <script type="module" src="log.js"></script>
     <script src="boostrap/bootstrap.bundle.min.js"></script>
+    <script src="boostrap/chart.js"></script>
 
     <meta charset="UTF-8">
     <title>Title</title>
@@ -74,6 +76,14 @@
             </div>
             <div class="col">
                 <div class="d-flex justify-content-end">
+                    <div id="btnLog" class="btnLogout">
+                        <span class="material-symbols-outlined">
+                            <svg xmlns="http://www.w3.org/2000/svg" height="25" viewBox="0 -960 960 960" width="48">
+                                <path
+                                        d="M320-240h320v-80H320v80Zm0-160h320v-80H320v80ZM240-80q-33 0-56.5-23.5T160-160v-640q0-33 23.5-56.5T240-880h320l240 240v480q0 33-23.5 56.5T720-80H240Zm280-520v-200H240v640h480v-440H520ZM240-800v200-200 640-640Z"
+                                        fill="white"/></svg>
+                        </span>
+                    </div>
                     <div id="btnLogout" class="btnLogout">
                         <span class="material-symbols-outlined">
                             <svg xmlns="http://www.w3.org/2000/svg" height="25" viewBox="0 -960 960 960" width="48"><path
@@ -85,154 +95,163 @@
             </div>
         </div>
 
-        <div id="Total">
-            <div class="progressAreaBG">
-                <div class="progressArea">
-                    <div class="row blink">
-                        <div class="col">
-                            <div class="d-flex justify-content-start">
-                                <div class="progressBalance">Loading...</div>
+        <div id="bars">
+            <div id="Total">
+                <div class="progressAreaBG">
+                    <div class="progressArea">
+                        <div class="row blink">
+                            <div class="col">
+                                <div class="d-flex justify-content-start">
+                                    <div class="progressBalance">Loading...</div>
+                                </div>
+                            </div>
+                            <div class="col ">
+                                <div class="d-flex justify-content-center">
+                                    <div class="progressType">Total Data</div>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="d-flex justify-content-end">
+                                    <div class="progressBalance">Loading...</div>
+                                </div>
                             </div>
                         </div>
-                        <div class="col ">
-                            <div class="d-flex justify-content-center">
-                                <div class="progressType">Total Data</div>
-                            </div>
-                        </div>
-                        <div class="col">
-                            <div class="d-flex justify-content-end">
-                                <div class="progressBalance">Loading...</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col">
-                            <div class="progress">
-                                <div class="progress-bar blink" style="width: 60%;">loading...</div>
-                            </div>
+                        <div class="row">
+                            <div class="col">
+                                <div class="progress">
+                                    <div class="progress-bar blink" style="width: 60%;">loading...</div>
+                                </div>
 
-                        </div>
-                    </div>
-                    <div class="row blink">
-                        <div class="col">
-                            <div class="d-flex justify-content-start">
-                                <div class="quota">Loading...</div>
                             </div>
                         </div>
-                        <div class="col ">
-                            <div class="d-flex justify-content-center">
-                                <div class="quotaGreen">Loading...</div>
+                        <div class="row blink">
+                            <div class="col">
+                                <div class="d-flex justify-content-start">
+                                    <div class="quota">Loading...</div>
+                                </div>
                             </div>
-                        </div>
-                        <div class="col">
-                            <div class="d-flex justify-content-end">
-                                <div class="quota">Loading...</div>
+                            <div class="col ">
+                                <div class="d-flex justify-content-center">
+                                    <div class="quotaGreen">Loading...</div>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="d-flex justify-content-end">
+                                    <div class="quota">Loading...</div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
+
             </div>
+            <div id="Standard">
+                <div class="progressAreaBG">
+                    <div class="progressArea">
+                        <div class="row blink">
+                            <div class="col">
+                                <div class="d-flex justify-content-start">
+                                    <div class="progressBalance">40.5 GB</div>
+                                </div>
+                            </div>
+                            <div class="col ">
+                                <div class="d-flex justify-content-center">
+                                    <div class="progressType">Standard Data</div>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="d-flex justify-content-end">
+                                    <div class="progressBalance">Loading...</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <div class="progress">
+                                    <div class="progress-bar blink" style="width: 60%;">loading...</div>
+                                </div>
 
-        </div>
-        <div id="Standard">
-            <div class="progressAreaBG">
-                <div class="progressArea">
-                    <div class="row blink">
-                        <div class="col">
-                            <div class="d-flex justify-content-start">
-                                <div class="progressBalance">40.5 GB</div>
                             </div>
                         </div>
-                        <div class="col ">
-                            <div class="d-flex justify-content-center">
-                                <div class="progressType">Standard Data</div>
+                        <div class="row blink">
+                            <div class="col">
+                                <div class="d-flex justify-content-start">
+                                    <div class="quota">Loading...</div>
+                                </div>
                             </div>
-                        </div>
-                        <div class="col">
-                            <div class="d-flex justify-content-end">
-                                <div class="progressBalance">Loading...</div>
+                            <div class="col ">
+                                <div class="d-flex justify-content-center">
+                                    <div class="quotaGreen">Loading...</div>
+                                </div>
                             </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col">
-                            <div class="progress">
-                                <div class="progress-bar blink" style="width: 60%;">loading...</div>
-                            </div>
-
-                        </div>
-                    </div>
-                    <div class="row blink">
-                        <div class="col">
-                            <div class="d-flex justify-content-start">
-                                <div class="quota">Loading...</div>
-                            </div>
-                        </div>
-                        <div class="col ">
-                            <div class="d-flex justify-content-center">
-                                <div class="quotaGreen">Loading...</div>
-                            </div>
-                        </div>
-                        <div class="col">
-                            <div class="d-flex justify-content-end">
-                                <div class="quota">Loading...</div>
+                            <div class="col">
+                                <div class="d-flex justify-content-end">
+                                    <div class="quota">Loading...</div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
+
             </div>
+            <div id="Night">
+                <div class="progressAreaBG">
+                    <div class="progressArea">
+                        <div class="row blink">
+                            <div class="col">
+                                <div class="d-flex justify-content-start">
+                                    <div class="progressBalance">40.5 GB</div>
+                                </div>
+                            </div>
+                            <div class="col ">
+                                <div class="d-flex justify-content-center">
+                                    <div class="progressType">Off-Peak Data</div>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="d-flex justify-content-end">
+                                    <div class="progressBalance">Loading...</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <div class="progress">
+                                    <div class="progress-bar blink" style="width: 60%;">loading...</div>
+                                </div>
 
-        </div>
-        <div id="Night">
-            <div class="progressAreaBG">
-                <div class="progressArea">
-                    <div class="row blink">
-                        <div class="col">
-                            <div class="d-flex justify-content-start">
-                                <div class="progressBalance">40.5 GB</div>
                             </div>
                         </div>
-                        <div class="col ">
-                            <div class="d-flex justify-content-center">
-                                <div class="progressType">Off-Peak Data</div>
+                        <div class="row blink">
+                            <div class="col">
+                                <div class="d-flex justify-content-start">
+                                    <div class="quota">Loading...</div>
+                                </div>
                             </div>
-                        </div>
-                        <div class="col">
-                            <div class="d-flex justify-content-end">
-                                <div class="progressBalance">Loading...</div>
+                            <div class="col ">
+                                <div class="d-flex justify-content-center">
+                                    <div class="quotaGreen">Loading...</div>
+                                </div>
                             </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col">
-                            <div class="progress">
-                                <div class="progress-bar blink" style="width: 60%;">loading...</div>
-                            </div>
-
-                        </div>
-                    </div>
-                    <div class="row blink">
-                        <div class="col">
-                            <div class="d-flex justify-content-start">
-                                <div class="quota">Loading...</div>
-                            </div>
-                        </div>
-                        <div class="col ">
-                            <div class="d-flex justify-content-center">
-                                <div class="quotaGreen">Loading...</div>
-                            </div>
-                        </div>
-                        <div class="col">
-                            <div class="d-flex justify-content-end">
-                                <div class="quota">Loading...</div>
+                            <div class="col">
+                                <div class="d-flex justify-content-end">
+                                    <div class="quota">Loading...</div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
+            </div>
         </div>
     </div>
+
+    <div id="logContainer" class="container d-none">
+        <canvas id="lineChart"></canvas>
+    </div>
 </div>
+
+
+
 </body>
 </html>

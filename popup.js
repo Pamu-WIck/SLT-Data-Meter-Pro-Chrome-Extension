@@ -6,6 +6,7 @@ let accTkn;
 
 document.getElementById("btnLogout").addEventListener("click", logOut);
 document.getElementById("btnLogin").addEventListener("click", login);
+document.getElementById("btnLog").addEventListener("click", viewLog);
 
 if (localStorage.getItem('serviceID') === null ||
     localStorage.getItem('accessToken') === null) {
@@ -180,6 +181,9 @@ async function getUsageSummary(accessToken, serviceID) {
         progressBar("Total", "Total", usage.total);
         progressBar("Standard", "Standard", usage.peak);
         progressBar("Night", "Off-Peak", usage.offPeak);
+
+    //     set gb usage and time to array local storage
+
     } catch (error) {
         console.log(error);
     }
@@ -231,9 +235,20 @@ function calculateVas(vasSummaryJson) {
             percentage: 100 - element.percentage,
         }
 
-        vasBar('widgetBG', dataType, summary)
+        vasBar('bars', dataType, summary)
 
     })
+}
+
+async function viewLog(){
+    console.log("viewLog function called");
+    if (!document.getElementById("bars").classList.contains("d-none")){
+        document.getElementById("bars").classList.add("d-none");
+        document.getElementById("logContainer").classList.remove("d-none");
+    } else {
+        document.getElementById("bars").classList.remove("d-none");
+        document.getElementById("logContainer").classList.add("d-none");
+    }
 }
 
 async function logOut(){
