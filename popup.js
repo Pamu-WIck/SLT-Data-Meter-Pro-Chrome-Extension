@@ -182,7 +182,7 @@ async function getUsageSummary(accessToken, serviceID) {
         progressBar("Standard", "Standard", usage.peak);
         progressBar("Night", "Off-Peak", usage.offPeak);
 
-    //     set gb usage and time to array local storage
+        //     set gb usage and time to array local storage
 
     } catch (error) {
         console.log(error);
@@ -240,18 +240,28 @@ function calculateVas(vasSummaryJson) {
     })
 }
 
-async function viewLog(){
+async function viewLog() {
     console.log("viewLog function called");
-    if (!document.getElementById("bars").classList.contains("d-none")){
-        document.getElementById("bars").classList.add("d-none");
-        document.getElementById("logContainer").classList.remove("d-none");
+
+    const svg = document.getElementById('btnLog').querySelector('svg');
+    const bar = document.getElementById("bars");
+    const log = document.getElementById("logContainer");
+
+    if (!bar.classList.contains("d-none")) {
+        bar.classList.add("d-none");
+        log.classList.remove("d-none");
+        const homeSVG = "M240-200h120v-240h240v240h120v-360L480-740 240-560v360Zm-80 80v-480l320-240 320 240v480H520v-240h-80v240H160Z";
+        svg.querySelector('path').setAttribute('d', homeSVG);
+
     } else {
-        document.getElementById("bars").classList.remove("d-none");
-        document.getElementById("logContainer").classList.add("d-none");
+        bar.classList.remove("d-none");
+        log.classList.add("d-none");
+        const logSVG = "M320-240h320v-80H320v80Zm0-160h320v-80H320v80ZM240-80q-33 0-56.5-23.5T160-160v-640q0-33 23.5-56.5T240-880h320l240 240v480q0 33-23.5 56.5T720-80H240Zm280-520v-200H240v640h480v-440H520ZM240-800v200-200 640-640Z";
+        svg.querySelector('path').setAttribute('d', logSVG);
     }
 }
 
-async function logOut(){
+async function logOut() {
     console.log("logOut function called");
     localStorage.clear();
     document.getElementById("meter").classList.add("d-none");
