@@ -1,5 +1,6 @@
 import {calculateUsage} from './calculateUsage.js';
 import {progressBar, vasBar} from './widget.js';
+import {addToLocalStorageArray} from './log.js';
 
 let sid;
 let accTkn;
@@ -182,7 +183,10 @@ async function getUsageSummary(accessToken, serviceID) {
         progressBar("Standard", "Standard", usage.peak);
         progressBar("Night", "Off-Peak", usage.offPeak);
 
-        //     set gb usage and time to array local storage
+        let reportedTime = new Date(data.dataBundle.reported_time);
+        reportedTime = `${reportedTime.getFullYear()}-${reportedTime.getMonth() + 1}-${reportedTime.getDate()} ${reportedTime.getHours()}:${reportedTime.getMinutes()}`;
+        console.log(reportedTime);
+        addToLocalStorageArray('UsageLog', `${reportedTime}:${usage.total.used}`);
 
     } catch (error) {
         console.log(error);

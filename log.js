@@ -1,5 +1,5 @@
-
-function addToLocalStorageArray(key, value) {
+export function addToLocalStorageArray(key, value) {
+    console.log("addToLocalStorageArray function called");
     let existingArray = localStorage.getItem(key);
 
     if (!existingArray) {
@@ -15,8 +15,15 @@ function addToLocalStorageArray(key, value) {
 function createLineChart(data) {
     const ctx = document.getElementById('lineChart').getContext('2d');
 
-    const labels = data.map(item => Object.keys(item)[0]);
-    const values = data.map(item => parseFloat(Object.values(item)[0]));
+    // Extract and format timestamps to show only hour and minute
+    const labels = data.map(item => {
+        const timestamp = item.split(" ")[1]; // Extract time part
+        const [hour, minute] = timestamp.split(":"); // Split into hour and minute
+        return `${hour}:${minute}`;
+    });
+
+    const values = data.map(item => parseFloat(item.split(":")[2])); // Assuming the value is extracted from the same part as the timestamp
+    console.log(values);
 
     // Create a gradient for the border color
     const gradient = ctx.createLinearGradient(0, 0, 300, 0); // Adjust the gradient dimensions as needed
@@ -53,7 +60,7 @@ function createLineChart(data) {
                 x: {
                     title: {
                         display: true,
-                        text: 'Time'
+                        text: 'Time (HH:mm)'
                     },
                     grid: {
                         color: 'rgba(217,211,211,0.06)',
@@ -73,26 +80,6 @@ function createLineChart(data) {
     });
 }
 
-// Example usage
-const data = [
-    {'1:30': 20},
-    {'1:40': 21.3},
-    {'2:30': 20.7},
-    {'2:40': 22.1},
-    {'3:30': 21.5},
-    {'3:40': 22.5},
-    {'4:30': 22.5},
-    {'4:40': 23.5},
-    {'5:30': 23.5},
-    {'1:30': 20},
-    {'1:40': 21.3},
-    {'2:30': 20.7},
-    {'2:40': 22.1},
-    {'3:30': 21.5},
-    {'3:40': 22.5},
-    {'4:30': 22.5},
-    {'4:40': 23.5},
-    {'5:30': 23.5},
-];
-
+//get data from local storage
+const data = JSON.parse(localStorage.getItem("UsageLog"));
 createLineChart(data);
