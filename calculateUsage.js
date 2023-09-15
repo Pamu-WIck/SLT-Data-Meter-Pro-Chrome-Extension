@@ -1,6 +1,6 @@
 export function calculateUsage(usageSummery) {
 
-    console.log("calculateUsage function called")
+    // console.log("calculateUsage function called")
     let usageSummeryJson = JSON.parse(usageSummery);
 
     const packageName = usageSummeryJson.dataBundle.my_package_info.package_name;
@@ -30,7 +30,7 @@ export function calculateUsage(usageSummery) {
 
     const daysCount = (validTill) => {
 
-        console.log("daysCount function called")
+        // console.log("daysCount function called")
 
         const [day, month] = validTill.split('-');
         const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep',

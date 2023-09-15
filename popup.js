@@ -1,6 +1,7 @@
 import {calculateUsage} from './calculateUsage.js';
 import {progressBar, vasBar} from './widget.js';
 import {addToLocalStorageArray} from './log.js';
+import {createLineChart} from './log.js';
 
 let sid;
 let accTkn;
@@ -22,13 +23,11 @@ if (localStorage.getItem('serviceID') === null ||
 }
 
 async function login() {
-    console.log("login function called")
+    // console.log("login function called")
 
     const uid = document.getElementById("uid").value;
     const pwd = document.getElementById("pwd").value;
     const channelID = 'WEB';
-
-    console.log(uid, pwd, channelID)
 
     const form = new URLSearchParams();
     form.append('username', uid);
@@ -75,7 +74,7 @@ async function login() {
 }
 
 async function getAccountDetails(accessToken, uid) {
-    console.log("getAccountDetails function called")
+    // console.log("getAccountDetails function called")
 
     fetch(`https://omniscapp.slt.lk/mobitelint/slt/api/AccountOMNI/GetAccountDetailRequest?username=${uid}`, {
         "headers": {
@@ -104,7 +103,7 @@ async function getAccountDetails(accessToken, uid) {
 }
 
 async function getServiceDetails() {
-    console.log("getServiceDetails function called")
+    // console.log("getServiceDetails function called")
 
     let accessToken = localStorage.getItem('accessToken');
     let telephoneNo = localStorage.getItem('telephoneNo');
@@ -145,7 +144,7 @@ async function getServiceDetails() {
 
 async function getUsageSummary(accessToken, serviceID) {
 
-    console.log("getUsageSummary function called")
+    // console.log("getUsageSummary function called")
 
     try {
         const response = await fetch(`https://omniscapp.slt.lk/mobitelint/slt/api/BBVAS/UsageSummary?subscriberID=${serviceID}`, {
@@ -175,7 +174,7 @@ async function getUsageSummary(accessToken, serviceID) {
         const data = await response.json();
         const usageSummary = JSON.stringify(data);
         const usage = calculateUsage(usageSummary);
-        console.log(usage);
+        // console.log(usage);
 
         document.getElementById("packageName").innerHTML = usage.packageName;
         document.getElementById("packageName").classList.remove("blink");
@@ -185,8 +184,11 @@ async function getUsageSummary(accessToken, serviceID) {
 
         let reportedTime = new Date(data.dataBundle.reported_time);
         reportedTime = `${reportedTime.getFullYear()}-${reportedTime.getMonth() + 1}-${reportedTime.getDate()} ${reportedTime.getHours()}:${reportedTime.getMinutes()}`;
-        console.log(reportedTime);
+        // console.log(reportedTime);
         addToLocalStorageArray('UsageLog', `${reportedTime}:${usage.total.used}`);
+
+        const UsageLog = JSON.parse(localStorage.getItem("UsageLog"));
+        createLineChart(UsageLog);
 
     } catch (error) {
         console.log(error);
@@ -194,7 +196,7 @@ async function getUsageSummary(accessToken, serviceID) {
 }
 
 async function getVasSummary(accessToken, serviceID) {
-    console.log("getVasSummary function called")
+    // console.log("getVasSummary function called")
 
     try {
         fetch(`https://omniscapp.slt.lk/mobitelint/slt/api/BBVAS/GetDashboardVASBundles?subscriberID=${serviceID}`, {
@@ -219,7 +221,7 @@ async function getVasSummary(accessToken, serviceID) {
         })
             .then(res => res.json())
             .then(data => {
-                console.log(data);
+                // console.log(data);
                 calculateVas(data);
             })
     } catch (error) {
@@ -245,7 +247,7 @@ function calculateVas(vasSummaryJson) {
 }
 
 async function viewLog() {
-    console.log("viewLog function called");
+    // console.log("viewLog function called");
 
     const svg = document.getElementById('btnLog').querySelector('svg');
     const bar = document.getElementById("bars");
@@ -266,7 +268,7 @@ async function viewLog() {
 }
 
 async function logOut() {
-    console.log("logOut function called");
+    // console.log("logOut function called");
     localStorage.clear();
     document.getElementById("meter").classList.add("d-none");
     document.getElementById("loginFrom").classList.remove("d-none");

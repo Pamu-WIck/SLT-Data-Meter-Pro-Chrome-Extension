@@ -4,15 +4,39 @@ export function addToLocalStorageArray(key, value) {
 
     if (!existingArray) {
         existingArray = [];
+        console.log("existingArray is empty, creating new array");
+        existingArray.push(value);
+        localStorage.setItem(key, JSON.stringify(existingArray));
     } else {
+        console.log("existingArray is not empty, parsing existing array")
         existingArray = JSON.parse(existingArray);
+
+        //get latest value
+        const latestValue = existingArray[existingArray.length - 1];
+        const latestValueDate = latestValue.split(" ")[0];
+        console.log("latestValueDate: " + latestValueDate);
+
+        //clear local storage if the latest value is from a different day
+        const currentDate = value.split(" ")[0];
+        if (latestValueDate !== currentDate) {
+            console.log("latest value is from a different day, clearing local storage");
+            localStorage.clear();
+            existingArray = [];
+        }
+
+        //stop adding repeated values
+        if (latestValue === value) {
+            console.log("latest value is the same as the new value, not adding to array");
+            return;
+        }
+        existingArray.push(value);
+        localStorage.setItem(key, JSON.stringify(existingArray));
     }
 
-    existingArray.push(value);
-    localStorage.setItem(key, JSON.stringify(existingArray));
+
 }
 
-function createLineChart(data) {
+export function createLineChart(data) {
     const ctx = document.getElementById('lineChart').getContext('2d');
 
     // Extract and format timestamps to show only hour and minute
@@ -60,7 +84,7 @@ function createLineChart(data) {
                 x: {
                     title: {
                         display: true,
-                        text: 'Time (HH:mm)'
+                        text: 'Time'
                     },
                     grid: {
                         color: 'rgba(217,211,211,0.06)',
@@ -80,6 +104,4 @@ function createLineChart(data) {
     });
 }
 
-//get data from local storage
-const data = JSON.parse(localStorage.getItem("UsageLog"));
-createLineChart(data);
+
