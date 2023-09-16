@@ -185,10 +185,14 @@ async function getUsageSummary(accessToken, serviceID) {
         let reportedTime = new Date(data.dataBundle.reported_time);
         reportedTime = `${reportedTime.getFullYear()}-${reportedTime.getMonth() + 1}-${reportedTime.getDate()} ${reportedTime.getHours()}:${reportedTime.getMinutes()}`;
         // console.log(reportedTime);
-        addToLocalStorageArray('UsageLog', `${reportedTime}:${usage.total.used}`);
+        addToLocalStorageArray('TotalLog', `${reportedTime}:${usage.total.used}`);
+        addToLocalStorageArray('StandardLog', `${reportedTime}:${usage.peak.used}`);
+        addToLocalStorageArray('NightLog', `${reportedTime}:${usage.offPeak.used}`);
 
-        const UsageLog = JSON.parse(localStorage.getItem("UsageLog"));
-        createLineChart(UsageLog);
+        const TotalLog = JSON.parse(localStorage.getItem('TotalLog'));
+        const StandardLog = JSON.parse(localStorage.getItem('StandardLog'));
+        const NightLog = JSON.parse(localStorage.getItem('NightLog'));
+        createLineChart(TotalLog, StandardLog, NightLog);
 
     } catch (error) {
         console.log(error);

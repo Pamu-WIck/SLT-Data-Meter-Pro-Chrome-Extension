@@ -36,48 +36,87 @@ export function addToLocalStorageArray(key, value) {
 
 }
 
-export function createLineChart(data) {
+export function createLineChart(TotalLog, StandardLog, NightLog) {
     const ctx = document.getElementById('lineChart').getContext('2d');
 
-    // Extract and format timestamps to show only hour and minute
-    const labels = data.map(item => {
+    // Extract and format timestamps to show only hour and minute (assuming the timestamps are the same for all data sets)
+    const labels = TotalLog.map(item => {
         const timestamp = item.split(" ")[1]; // Extract time part
         const [hour, minute] = timestamp.split(":"); // Split into hour and minute
         return `${hour}:${minute}`;
     });
 
-    const values = data.map(item => parseFloat(item.split(":")[2])); // Assuming the value is extracted from the same part as the timestamp
-    console.log(values);
+    const totalValues = TotalLog.map(item => parseFloat(item.split(":")[2])); // Extract values for TotalLog
+    const standardValues = StandardLog.map(item => parseFloat(item.split(":")[2])); // Extract values for StandardLog
+    const nightValues = NightLog.map(item => parseFloat(item.split(":")[2])); // Extract values for NightLog
 
-    // Create a gradient for the border color
-    const gradient = ctx.createLinearGradient(0, 0, 300, 0); // Adjust the gradient dimensions as needed
-    gradient.addColorStop(0, '#4936D2'); // Start color
-    gradient.addColorStop(1, '#8F63EF'); // End color
+    // Create gradients for the border colors
+    const totalGradient = ctx.createLinearGradient(0, 0, 300, 0);
+    totalGradient.addColorStop(0, '#4936D2');
+    totalGradient.addColorStop(1, '#8F63EF');
+
+    const standardGradient = ctx.createLinearGradient(0, 0, 300, 0);
+    standardGradient.addColorStop(0, '#3eb2bc');
+    standardGradient.addColorStop(1, '#1b96f1');
+
+    const nightGradient = ctx.createLinearGradient(0, 0, 300, 0);
+    nightGradient.addColorStop(0, '#8e2ef7');
+    nightGradient.addColorStop(1, '#fb8332');
 
     new Chart(ctx, {
         type: 'line',
         data: {
             labels: labels,
             datasets: [{
-                label: 'GB Usage',
-                data: values,
+                label: 'Total Usage',
+                data: totalValues,
                 backgroundColor: 'rgb(215,211,217)',
-                borderColor: gradient,
+                borderColor: totalGradient,
                 borderWidth: 2,
-                pointRadius: 5, // Adjust the point radius as needed
-                pointBackgroundColor: 'rgba(75, 192, 192, 1)', // Adjust the point color as needed
-                pointBorderWidth: 2, // Adjust the point border width as needed
-                pointHoverRadius: 8, // Adjust the point hover radius as needed
-                pointHoverBackgroundColor: 'rgba(75, 192, 192, 1)', // Adjust the point hover color as needed
-                pointHitRadius: 10, // Adjust the point hit radius as needed
-                pointStyle: 'circle', // Use 'circle' for round points
+                pointRadius: 5,
+                pointBackgroundColor: 'rgb(255,255,255)',
+                pointBorderWidth: 2,
+                pointHoverRadius: 8,
+                pointHoverBackgroundColor: 'rgb(232,239,239)',
+                pointHitRadius: 10,
+                pointStyle: 'circle',
+                cubicInterpolationMode: 'monotone',
+                hidden: true
+            }, {
+                label: 'Standard Usage',
+                data: standardValues,
+                backgroundColor: 'rgb(215,211,217)',
+                borderColor: standardGradient,
+                borderWidth: 2,
+                pointRadius: 5,
+                pointBackgroundColor: 'rgb(255,255,255)',
+                pointBorderWidth: 2,
+                pointHoverRadius: 8,
+                pointHoverBackgroundColor: 'rgb(253,253,253)',
+                pointHitRadius: 10,
+                pointStyle: 'circle',
                 cubicInterpolationMode: 'monotone'
+            }, {
+                label: 'Night Usage',
+                data: nightValues,
+                backgroundColor: 'rgb(215,211,217)',
+                borderColor: nightGradient,
+                borderWidth: 2,
+                pointRadius: 5,
+                pointBackgroundColor: 'rgb(255,255,255)',
+                pointBorderWidth: 2,
+                pointHoverRadius: 8,
+                pointHoverBackgroundColor: 'rgb(255,255,255)',
+                pointHitRadius: 10,
+                pointStyle: 'circle',
+                cubicInterpolationMode: 'monotone',
+                hidden: true
             }]
         },
         options: {
             plugins: {
                 legend: {
-                    display: false
+                    display: true
                 }
             },
             scales: {
@@ -97,11 +136,16 @@ export function createLineChart(data) {
                     },
                     grid: {
                         color: 'rgba(217,211,211,0.06)',
+                    },
+                    // Specify the axis format to display decimal values
+                    ticks: {
+                        callback: function (value, index, values) {
+                            return value.toFixed(1); // Display one decimal place
+                        }
                     }
                 }
             }
         }
     });
 }
-
 
