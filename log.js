@@ -19,8 +19,8 @@ export function addToLocalStorageArray(key, value) {
         //clear local storage if the latest value is from a different day
         const currentDate = value.split(" ")[0];
         if (latestValueDate !== currentDate) {
-            console.log("latest value is from a different day, clearing local storage");
-            localStorage.clear();
+            console.log("latest value is from a different day, empty array in local stoarage");
+            localStorage.removeItem(key);
             existingArray = [];
         }
 
