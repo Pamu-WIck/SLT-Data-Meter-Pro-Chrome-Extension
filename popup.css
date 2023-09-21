@@ -212,10 +212,10 @@ button:hover {
 }
 
 .btnLogout {
-    margin-right: 20%;
+    margin-right: 8%;
     margin-top: 5%;
     opacity: 50%;
-    cursor: pointer
+    cursor: pointer;
 }
 
 .btnLogout:hover {
@@ -231,3 +231,7 @@ button:hover {
 .sltsvg {
     width: 50%
 }
+
+/*.headButtons {*/
+/*    max-width: 40px;*/
+/*}*/
