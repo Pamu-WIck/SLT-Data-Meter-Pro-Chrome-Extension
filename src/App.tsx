@@ -4,7 +4,7 @@ import MeterWidget from "./MeterWidget.tsx";
 function App() {
   return (
     <>
-      <div>
+      <div className="min-w-[200px] bg-secondary">
         <MeterWidget />
       </div>
     </>

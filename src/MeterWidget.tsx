@@ -1,9 +1,9 @@
-import {Alert} from 'flowbite-react';
-import React, { Component } from "react";
-function MeterWidget() {
+const ProgressBar = () => {
     return (
-        <Alert>You added Me!!</Alert>
+        <div className="text-white font-roboto text-center font-bold">
+            SLT Usage Meter Pro
+        </div>
     );
-}
+};
 
-export default MeterWidget;
+export default ProgressBar;
