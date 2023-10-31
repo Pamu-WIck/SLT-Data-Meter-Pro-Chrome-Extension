@@ -14,6 +14,9 @@ export default {
         text: "#FFFFFF",
       },
     },
+      fontFamily: {
+        roboto: ["Roboto", "sans-serif"],
+      }
   },
   plugins: [
       require("flowbite/plugin")({
