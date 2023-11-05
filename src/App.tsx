@@ -1,11 +1,11 @@
 import "./App.css";
-import MeterWidget from "./MeterWidget.tsx";
+import MainPanel from "./MainPanel.tsx";
 
 function App() {
   return (
     <>
-      <div className="min-w-[200px] min-h-[500px] bg-background">
-        <MeterWidget />
+      <div className="w-max min-w-[500px] bg-background px-6 py-4" >
+        <MainPanel />
       </div>
     </>
   );
