@@ -7,8 +7,8 @@ const ProgressBar = () => {
                 <div className="text-center font-bold text-lg text-white font-roboto ">
                     SLT Usage Meter Pro
                 </div>
-                <MeterWidget />
-                <MeterWidget />
+                <MeterWidget percentage={"80%"} />
+                <MeterWidget percentage={"80%"}/>
             </div>
         </>
     );
