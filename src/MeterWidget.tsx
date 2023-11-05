@@ -1,5 +1,5 @@
-const MeterWidget = () => {
-    const percentage = "80%";
+const MeterWidget = ({percentage}) => {
+    // const percentage = "80%";
     return (
         <div className="flex-col bg-secondary px-8 py-3 text-white felx rounded-md ">
             <div className="flex flex-row place-content-between">
