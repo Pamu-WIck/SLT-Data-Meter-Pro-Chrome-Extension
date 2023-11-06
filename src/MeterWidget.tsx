@@ -1,16 +1,17 @@
-const MeterWidget = ({percentage}) => {
+
+const MeterWidget = ({percentage}: {percentage: string}) => {
     // const percentage = "80%";
     return (
-        <div className="flex-col bg-secondary px-8 py-3 text-white felx rounded-md ">
+        <div className="flex-col rounded-md px-8 py-3 text-white bg-secondary felx">
             <div className="flex flex-row place-content-between">
                 <p>2.7 GB</p>
                 <p className="font-roboto">Standard Data</p>
                 <p>37.3 GB</p>
             </div>
-            <div className="mx-auto rounded text-center w-100 bg-secondary py-1">
-                <div className="w-full rounded-full bg-primary2 bg-opacity-30 h-6">
+            <div className="mx-auto rounded py-1 text-center w-100 bg-secondary">
+                <div className="h-6 w-full rounded-full bg-opacity-30 bg-primary2">
                     <div
-                        className="rounded-full h-6 bg-gradient-to-r items-center flex justify-center text-xs font-medium leading-none text-blue-100 from-primary1 to-primary2 p-0.5"
+                        className="flex h-6 items-center justify-center rounded-full bg-gradient-to-r text-xs font-medium leading-none text-blue-100 from-primary1 to-primary2 p-0.5"
                         style={{width: percentage}}> {percentage}</div>
                 </div>
             </div>
