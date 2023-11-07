@@ -5,7 +5,7 @@ const MeterWidget = ({percentage}: {percentage: string}) => {
         <div className="flex-col rounded-md px-8 py-3 text-white bg-secondary felx">
             <div className="flex flex-row place-content-between">
                 <p>2.7 GB</p>
-                <p className="font-roboto">Standard Data</p>
+                <p className="font-roboto font-semibold">Standard Data</p>
                 <p>37.3 GB</p>
             </div>
             <div className="mx-auto rounded py-1 text-center w-100 bg-secondary">
