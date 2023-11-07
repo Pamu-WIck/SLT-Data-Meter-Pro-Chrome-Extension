@@ -1,5 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -16,4 +17,10 @@
         @apply rounded bg-opacity-60 p-1 text-white text-[10px];
     }
 
+}
+
+@layer utilities {
+    .debug {
+        @apply border-[1px] border-red-500;
+    }
 }
