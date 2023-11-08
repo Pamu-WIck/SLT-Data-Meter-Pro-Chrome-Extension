@@ -1,5 +1,5 @@
-import "./App.css";
-import MainPanel from "./MainPanel.tsx";
+import "./styles/App.css";
+import MainPanel from "./components/MainPanel.tsx";
 
 function App() {
   return (
