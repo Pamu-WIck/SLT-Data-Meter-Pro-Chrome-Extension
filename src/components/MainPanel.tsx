@@ -1,4 +1,4 @@
-import MeterWidget from "./MeterWidget.tsx";
+import ChartPanel from "./ChartPanel.tsx";
 const ProgressBar = () => {
 
     return (
@@ -43,10 +43,7 @@ const ProgressBar = () => {
                         SLT Usage Meter Pro
                     </div>
                 </div>
-                <MeterWidget percentage={"40%"} />
-                <MeterWidget percentage={"80%"}/>
-                <MeterWidget percentage={"40%"}/>
-                <MeterWidget percentage={"10%"}/>
+                <ChartPanel />
             </div>
         </>
     );
