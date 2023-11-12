@@ -1,4 +1,5 @@
 import ChartPanel from "./ChartPanel.tsx";
+import MeterWidget from "./MeterWidget.tsx";
 const ProgressBar = () => {
 
     return (
@@ -44,6 +45,9 @@ const ProgressBar = () => {
                     </div>
                 </div>
                 <ChartPanel />
+                <MeterWidget percentage={"60%"} />
+                <MeterWidget percentage={"40%"} />
+                <MeterWidget percentage={"10%"} />
             </div>
         </>
     );
