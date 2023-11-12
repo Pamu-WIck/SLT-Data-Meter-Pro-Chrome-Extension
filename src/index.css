@@ -18,10 +18,18 @@
         @apply rounded p-1 text-white text-[10px];
     }
 
+    .btn-chart {
+        @apply mr-2 rounded-md border-white bg-none px-2 font-bold text-white opacity-50 font-roboto border-[1px];
+    }
+
+    .btn-chart-active {
+        @apply mr-2 rounded-md bg-white px-2 font-bold opacity-90 font-roboto text-secondary;
+    }
+
 }
 
 @layer utilities {
     .debug {
-        @apply border-[1px] border-red-500;
+        @apply border-red-500 border-[1px];
     }
 }
