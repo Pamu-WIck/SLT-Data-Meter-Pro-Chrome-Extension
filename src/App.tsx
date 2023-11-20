@@ -1,11 +1,11 @@
 import "./styles/App.css";
-import MainPanel from "./components/MainPanel.tsx";
+import Login from "./components/Login.tsx";
 
 function App() {
   return (
     <>
       <div className="w-max min-w-[500px] bg-background" >
-        <MainPanel />
+        <Login />
       </div>
     </>
   );
