@@ -11,9 +11,9 @@ const ChartPanel = () => {
                 </p>
                 <div className="relative top-0 right-5 flex justify-end">
                     <button
-                        className="btn-chart">Day
+                        className="btn-chart-active">D
                     </button>
-                    <button className="btn-chart-active">Month
+                    <button className="btn-chart">M
                     </button>
                 </div>
                 <UsageChart/>
