@@ -3,7 +3,7 @@ import {Tooltip} from "flowbite-react";
 const MeterWidget = (json: { json: {name: string; limit: number; used: number; remaining: number; percentage: number; dailyQuota: number; currentDailyQuota: number; remainDailyQuota: number; }; }) => {
 
     const {name, limit, used, remaining, percentage, dailyQuota, currentDailyQuota, remainDailyQuota} = json.json;
-
+    console.log(json.json)
     return (
         <div
             className="flex-col rounded-md px-8 py-3 text-white bg-secondary felx hover:shadow-[0_35px_60px_-15px_rgba(0,0,0,0.3)]">
@@ -25,7 +25,7 @@ const MeterWidget = (json: { json: {name: string; limit: number; used: number; r
                     </div>
                 </div>
             </div>
-            <div className="flex flex-row place-content-between">
+            {dailyQuota != null && <div className="flex flex-row place-content-between">
                 <Tooltip content={"Average daily usage of past days"} style={"dark"} animation="duration-300">
                     <div className="bg-opacity-50 average-usage bg-primary_purple">{currentDailyQuota} GB</div>
                 </Tooltip>
@@ -35,8 +35,7 @@ const MeterWidget = (json: { json: {name: string; limit: number; used: number; r
                 <Tooltip content={"Average daily usage for remaining days"} style={"dark"} animation="duration-300">
                     <div className="bg-opacity-50 average-usage bg-primary_purple">{remainDailyQuota} GB</div>
                 </Tooltip>
-
-            </div>
+            </div>}
         </div>
     )
 }
