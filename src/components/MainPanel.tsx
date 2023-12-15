@@ -3,6 +3,7 @@ import Header from "./Header.tsx";
 import { useEffect, useState } from "react";
 import {fetchUsageSummary, fetchVas} from "../data/fetch.ts";
 import {Spinner} from "flowbite-react";
+import UsageChart from "./UsageChart.tsx";
 
 const ProgressBar = () => {
     const [usageData, setUsageData] = useState([] as any[]);
@@ -39,6 +40,8 @@ const ProgressBar = () => {
                 {usageData.map((usageItem, index) => (
                     <MeterWidget key={index} json={usageItem} />
                 ))}
+
+                <UsageChart/>
 
             </div>
         </>

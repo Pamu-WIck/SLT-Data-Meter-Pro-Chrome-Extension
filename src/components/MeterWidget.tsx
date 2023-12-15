@@ -3,7 +3,6 @@ import {Tooltip} from "flowbite-react";
 const MeterWidget = (json: { json: {name: string; limit: number; used: number; remaining: number; percentage: number; dailyQuota: number; currentDailyQuota: number; remainDailyQuota: number; }; }) => {
 
     const {name, limit, used, remaining, percentage, dailyQuota, currentDailyQuota, remainDailyQuota} = json.json;
-    console.log(json.json)
     return (
         <div
             className="flex-col rounded-md px-8 py-3 text-white bg-secondary felx hover:shadow-[0_35px_60px_-15px_rgba(0,0,0,0.3)]">
