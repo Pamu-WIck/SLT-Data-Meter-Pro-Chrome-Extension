@@ -3,15 +3,13 @@ import {usageSum} from "./usageSummary.ts";
 
 const baseURL = 'https://omniscapp.slt.lk/mobitelint/slt/api/'
 
-//check if token is available in local storage
-const token = localStorage.getItem('token');
-
-
 
 console.time();
 
 
 const fetchData = async (url:string) => {
+
+    const token = localStorage.getItem('token');
 
     const headers = {
         accept: 'application/json, text/plain, */*',
@@ -68,6 +66,7 @@ export const fetchGetServiceDetails = async (telephoneNo: number) => {
     const url = `AccountOMNI/GetServiceDetailRequest?telephoneNo=${telephoneNo}`;
     const data = await fetchData(url);
     localStorage.setItem('serviceID', data.dataBundle.listofBBService[0].serviceID);
+    window.location.reload();
 }
 
 export const fetchUsageSummary = async () => {
