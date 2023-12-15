@@ -43,7 +43,6 @@ export const fetchLogin = async (username: string, password: string) => {
         const response = await axios.post(url, new URLSearchParams(data).toString(), { headers });
         console.timeLog();
         if (response.status === 200){
-            console.log(response.data.accessToken);
             const token = response.data.accessToken;
             localStorage.setItem('token', token);
 
@@ -75,6 +74,7 @@ export const fetchUsageSummary = async () => {
     const data = await fetchData(url);
     // return usagesum(data);
     console.timeLog();
+    console.log(usageSum(data));
     return usageSum(data);
 }
 
@@ -83,7 +83,6 @@ export const fetchVas = async () => {
     const url = `BBVAS/GetDashboardVASBundles?subscriberID=${serviceID}`;
     const data = await fetchData(url);
     console.timeLog();
-    console.log(data);
     return data;
 }
 

@@ -51,18 +51,18 @@ const UsageChart = () => {
         },
         series: [
             {
-                name: "New users",
-                data: [6500, 6418, 6456, 6526, 6356, 6456],
+                name: "Total",
+                data: [6500 ],
                 color: "#4936D2",
             },
             {
-                name: "Returning users",
-                data: [4500, 4518, 7500, 4526, 4556, 4456],
+                name: "Standard",
+                data: [4500],
                 color: "#4FB94A",
             },
             {
-                name: "Total users",
-                data: [3000, 4658,5327, 7495, 4526, 4556],
+                name: "Free",
+                data: [3000],
                 color: "#1DB5E9",
             }
         ],
