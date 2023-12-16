@@ -1,10 +1,10 @@
 import axios from "axios";
 import {usageSum} from "./usageSummary.ts";
+import {historyLog, usage} from "./history.ts";
 
 const baseURL = 'https://omniscapp.slt.lk/mobitelint/slt/api/'
 
 
-console.time();
 
 
 const fetchData = async (url:string) => {
@@ -72,17 +72,18 @@ export const fetchUsageSummary = async () => {
     const serviceID = localStorage.getItem('serviceID')
     const url = `BBVAS/UsageSummary?subscriberID=${serviceID}`;
     const data = await fetchData(url);
-    // return usagesum(data);
-    console.timeLog();
-    console.log(usageSum(data));
-    return usageSum(data);
+
+
+    const UsageSummary = usageSum(data);
+    historyLog(data, usage(UsageSummary));
+
+    return UsageSummary;
 }
 
 export const fetchVas = async () => {
     const serviceID = localStorage.getItem('serviceID')
     const url = `BBVAS/GetDashboardVASBundles?subscriberID=${serviceID}`;
     const data = await fetchData(url);
-    console.timeLog();
     return data;
 }
 
