@@ -20,25 +20,33 @@ export const historyLog = ({dataBundle:{reported_time : time}} :any , usage: any
         localStorage.setItem('history', JSON.stringify(history));
     } else {
         console.log('history found')
+
         //add new data to existing data
         const history = JSON.parse(data);
         history[time] = usage;
 
-        // get latest value
-        const latest : any = Object.keys(history).sort().reverse()[0];
-        console.log(latest); //17-Dec-2023 12:45 AM
+        // get first value
+        const latest : any = Object.keys(history)[0];
+        console.log(latest)
 
         //clear history if latest value date is not == time
-        //get only date
         const latestDate = latest.split(' ')[0];
-        console.log(`latestDate: ${latestDate}`);
         const date = time.split(' ')[0];
-        console.log(`date: ${date}`);
+
+        console.log(latestDate)
+        console.log(date)
+
 
         if (latestDate !== date) {
             localStorage.removeItem('history');
+            console.log('history cleared')
+        } else {
+            console.log('history not cleared')
         }
 
+        // console.log(history)
         localStorage.setItem('history', JSON.stringify(history));
     }
 }
+
+
