@@ -8,6 +8,13 @@ import UsageChart from "./UsageChart.tsx";
 const MainPanel = () => {
     const [usageData, setUsageData] = useState([] as any[]);
     const [isLoading, setIsLoading] = useState(true);
+    const [showMeterWidget, setShowMeterWidget] = useState(true);
+    const [showUsageChart, setShowUsageChart] = useState(false);
+
+    const toggleMeterWidget = () => {
+        setShowMeterWidget((prev) => !prev);
+        setShowUsageChart((prev) => !prev);
+    }
 
     useEffect(() => {
         const fetchData = async () => {
@@ -29,7 +36,7 @@ const MainPanel = () => {
     return (
         <>
             <div className="flex flex-col justify-center gap-y-4">
-                <Header />
+                <Header onToggleButtonClick={toggleMeterWidget}/>
 
                 {isLoading && (
                     <div className="text-center">
@@ -37,11 +44,11 @@ const MainPanel = () => {
                     </div>
                 )}
 
-                {usageData.map((usageItem, index) => (
+                {showMeterWidget && usageData.map((usageItem, index) => (
                     <MeterWidget key={index} json={usageItem} />
                 ))}
 
-                <UsageChart/>
+                {showUsageChart && <UsageChart/>}
 
             </div>
         </>
