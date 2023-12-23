@@ -5,7 +5,7 @@ import {fetchUsageSummary, fetchVas} from "../data/fetch.ts";
 import {Spinner} from "flowbite-react";
 import UsageChart from "./UsageChart.tsx";
 
-const ProgressBar = () => {
+const MainPanel = () => {
     const [usageData, setUsageData] = useState([] as any[]);
     const [isLoading, setIsLoading] = useState(true);
 
@@ -48,4 +48,4 @@ const ProgressBar = () => {
     );
 };
 
-export default ProgressBar;
+export default MainPanel;

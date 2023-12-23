@@ -2,6 +2,49 @@ import ApexCharts from "react-apexcharts";
 import {ApexOptions} from "apexcharts";
 
 const UsageChart = () => {
+
+    interface ChartData {
+        name: string;
+        used: string; // You may need to adjust the type based on the actual data type
+    }
+
+    interface HistoryData {
+        [time: string]: ChartData[];
+    }
+
+    const data: any = localStorage.getItem("history");
+    const parsedData: HistoryData = JSON.parse(data);
+
+    const standardArray: number[] = [];
+    const freeArray: number[] = [];
+    const totalArray: number[] = [];
+    const timeArray: string[] = [];
+
+    Object.entries(parsedData).forEach(([time, values]) => {
+        const standardItem = values.find((item) => item.name === "Standard");
+        const freeItem = values.find((item) => item.name === "Free");
+        const totalItem = values.find((item) => item.name === "Total");
+
+        if (standardItem && standardItem.used !== undefined) {
+            const standardValue = parseFloat(standardItem.used);
+            standardArray.push(standardValue);
+        }
+
+        if (freeItem && freeItem.used !== undefined) {
+            const freeValue = parseFloat(freeItem.used);
+            freeArray.push(freeValue);
+        }
+
+        if (totalItem && totalItem.used !== undefined) {
+            const totalValue = parseFloat(totalItem.used);
+            totalArray.push(totalValue);
+        }
+
+        timeArray.push(time.slice(12, 17));
+    });
+
+
+
     const options: ApexOptions = {
         chart: {
             height: "100%",
@@ -52,29 +95,22 @@ const UsageChart = () => {
         series: [
             {
                 name: "Total",
-                data: [6500 ],
+                data: totalArray,
                 color: "#4936D2",
             },
             {
                 name: "Standard",
-                data: [4500],
+                data: standardArray,
                 color: "#4FB94A",
             },
             {
                 name: "Free",
-                data: [3000],
+                data: freeArray,
                 color: "#1DB5E9",
             }
         ],
         xaxis: {
-            categories: [
-                "1:30",
-                "2:30",
-                "3:30",
-                "4:30",
-                "5:30",
-                "6:30",
-            ],
+            categories: timeArray,
             labels: {
                 show: true,
                 style: {
