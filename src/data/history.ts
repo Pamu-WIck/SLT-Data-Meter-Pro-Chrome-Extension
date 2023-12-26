@@ -21,31 +21,38 @@ export const historyLog = ({dataBundle:{reported_time : time}} :any , usage: any
     } else {
         console.log('history found')
 
-        //add new data to existing data
-        const history = JSON.parse(data);
-        history[time] = usage;
+        let existHistory = JSON.parse(data);
 
         // get first value
-        const latest : any = Object.keys(history)[0];
-        console.log(latest)
+        const latest : any = Object.keys(existHistory)[0];
+        // console.log(latest)
 
         //clear history if latest value date is not == time
         const latestDate = latest.split(' ')[0];
         const date = time.split(' ')[0];
 
-        console.log(latestDate)
-        console.log(date)
+        // console.log(latestDate)
+        // console.log(date)
 
+        console.log(`history : ${history}`)
 
         if (latestDate !== date) {
-            localStorage.removeItem('history');
+
             console.log('history cleared')
+            const history: IHistory = {};
+            history[time] = usage;
+
+            console.table(history)
+            localStorage.setItem('history', JSON.stringify(history));
+
         } else {
+
             console.log('history not cleared')
+            console.table(existHistory)
+            existHistory[time] = usage;
+            localStorage.setItem('history', JSON.stringify(existHistory));
         }
 
-        // console.log(history)
-        localStorage.setItem('history', JSON.stringify(history));
     }
 }
 
