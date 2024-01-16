@@ -3,11 +3,13 @@ import {FaUserAlt} from "react-icons/fa";
 import {RiLockPasswordFill} from "react-icons/ri";
 import {fetchLogin} from "../data/fetch.ts";
 import {useState} from "react";
+import {Spinner} from "flowbite-react";
 
 const Login = () => {
 
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
+    const [loading, setLoading] = useState(false);
 
     const handleUsernameChange = (event: any) => {
         setUsername(event.target.value);
@@ -18,12 +20,20 @@ const Login = () => {
     }
 
     const handleSignIn = async () => {
+        setLoading(true)
+
         try {
             console.log("Clicked");
             const data = await fetchLogin(username, password);
+
+            //todo loading icon while fetching
+
+
             console.log(data);
         } catch (e) {
             console.error("Error fetching usage summary:", e);
+        } finally {
+            setLoading(false);
         }
     }
     return (
@@ -42,7 +52,7 @@ const Login = () => {
                             <FaUserAlt className="h-5 w-5 text-gray-400 opacity-20" aria-hidden="true"/>
                         </div>
                         <input type="text" id="username"
-                               className="block h-12 w-full rounded-lg border-none border-gray-300 text-sm font-medium text-white placeholder-opacity-20 bg-secondary ps-10 p-2.5 font-roboto focus:border-green-500 focus:ring-gray-500"
+                               className="block h-12 w-full rounded-lg border-none border-gray-300 text-sm font-medium text-white placeholder-opacity-20 bg-secondary ps-10 p-2.5 font-roboto "
                                placeholder="Username" value={username} onChange={handleUsernameChange}/>
                     </div>
 
@@ -56,11 +66,13 @@ const Login = () => {
                     </div>
 
                     <button
-                        className="mx-auto rounded-full px-4 py-2 font-bold text-white font-roboto w-[30%] bg-primary_purple hover:bg-primary_blue" onClick={handleSignIn}>
+                        className="mx-auto rounded-full bg-opacity-30 px-4 py-2 font-bold text-white text-opacity-30 font-roboto w-[30%] bg-primary_purple hover:bg-primary_blue" onClick={handleSignIn}>
+                        {loading && <Spinner color="light" size="sm" className="mr-2"/> }
+
                         Sign In
                     </button>
 
-                    <div className="mx-auto pt-3 text-center font-semibold text-white text-opacity-50 font-roboto ">Sign
+                    <div className="mx-auto pt-3 text-center font-semibold text-white text-opacity-50 font-roboto">Sign
                         with MY SLT
                     </div>
 
