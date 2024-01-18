@@ -3,8 +3,11 @@ import {Logout} from "../data/logout.ts";
 import {Tooltip} from "flowbite-react";
 import {FiLogOut} from "react-icons/fi";
 import {CgNotes} from "react-icons/cg";
+import {FaChartLine} from "react-icons/fa6";
 
-const Header = ({onToggleButtonClick} : any) => {
+const Header = ({onToggleButtonClick, currentIcon} : any) => {
+
+
 
     return (
         <div className="flex flex-col justify-center">
@@ -17,7 +20,8 @@ const Header = ({onToggleButtonClick} : any) => {
                     <button
                         className="absolute right-20 opacity-40 hover:opacity-100 hover:scale-105 transition-all duration-300"
                         onClick={onToggleButtonClick}>
-                        <CgNotes  className="h-6 w-6  text-white" aria-hidden="true"/>
+                        {currentIcon}
+                        {/*todo change icon*/}
                     </button>
                 </Tooltip>
                 <Tooltip content="Click to Logout">
