@@ -5,7 +5,7 @@ const UsageChart = () => {
 
     interface ChartData {
         name: string;
-        used: string; // You may need to adjust the type based on the actual data type
+        used: string;
     }
 
     interface HistoryData {
@@ -48,7 +48,7 @@ const UsageChart = () => {
     const options: ApexOptions = {
         chart: {
             height: "100%",
-            type: "area", // Change the chart type to 'bar'
+            type: "area",
             fontFamily: "Inter, sans-serif",
             dropShadow: {
                 enabled: false,
@@ -70,17 +70,17 @@ const UsageChart = () => {
             gradient: {
                 shade: "dark",
                 type: "vertical",
-                shadeIntensity: 0.2,
-                opacityFrom: 0.7,
+                shadeIntensity: 0.5,
+                opacityFrom: 0.5,
                 opacityTo: 0.0,
-                stops: [0, 100],
+                stops: [0, 60],
             },
         },
         dataLabels: {
             enabled: false,
         },
         stroke: {
-            width: 4,
+            width: 2,
             curve: "smooth",
         },
         grid: {

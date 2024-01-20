@@ -3,7 +3,7 @@ import Header from "./Header.tsx";
 import React, { useEffect, useState, Suspense } from "react";
 import {fetchUsageSummary, fetchVas} from "../data/fetch.ts";
 import {Spinner} from "flowbite-react";
-import {FaChartLine} from "react-icons/fa6";
+import { BiLineChart } from "react-icons/bi";
 import {CgNotes} from "react-icons/cg";
 
 const UsageChart = React.lazy(() => import("./UsageChart.tsx"));
@@ -17,7 +17,7 @@ const MainPanel = () => {
 
     const toggleMeterWidget = () => {
         setCurrentIcon(currentIcon.type === CgNotes
-            ? <FaChartLine className="h-6 w-6  text-white" aria-hidden="true"/>
+            ? <BiLineChart className="h-6 w-6  text-white" aria-hidden="true"/>
             : <CgNotes className="h-6 w-6  text-white" aria-hidden="true"/>);
         setShowMeterWidget((prev) => !prev);
         setShowUsageChart((prev) => !prev);
