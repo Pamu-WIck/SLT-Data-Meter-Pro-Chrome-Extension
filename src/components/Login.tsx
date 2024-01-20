@@ -2,8 +2,10 @@ import Logo from "../assets/slt.svg";
 import {FaUserAlt} from "react-icons/fa";
 import {RiLockPasswordFill} from "react-icons/ri";
 import {fetchLogin} from "../data/fetch.ts";
-import {useState} from "react";
+import React, {useState} from "react";
 import {Spinner} from "flowbite-react";
+
+type InputChangeEvent = React.ChangeEvent<HTMLInputElement>;
 
 const Login = () => {
 
@@ -11,11 +13,11 @@ const Login = () => {
     const [password, setPassword] = useState("");
     const [loading, setLoading] = useState(false);
 
-    const handleUsernameChange = (event: any) => {
+    const handleUsernameChange = (event: InputChangeEvent) => {
         setUsername(event.target.value);
     }
 
-    const handlePasswordChange = (event: any) => {
+    const handlePasswordChange = (event: InputChangeEvent) => {
         setPassword(event.target.value);
     }
 

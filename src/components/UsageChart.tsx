@@ -12,7 +12,7 @@ const UsageChart = () => {
         [time: string]: ChartData[];
     }
 
-    const data: any = localStorage.getItem("history");
+    const data: string = localStorage.getItem("history") as string;
     const parsedData: HistoryData = JSON.parse(data);
 
     const standardArray: number[] = [];

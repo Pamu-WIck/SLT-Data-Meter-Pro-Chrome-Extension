@@ -9,7 +9,7 @@ import {CgNotes} from "react-icons/cg";
 const UsageChart = React.lazy(() => import("./UsageChart.tsx"));
 
 const MainPanel = () => {
-    const [usageData, setUsageData] = useState([] as any[]);
+    const [usageData, setUsageData] = useState([] as object[]);
     const [isLoading, setIsLoading] = useState(true);
     const [showMeterWidget, setShowMeterWidget] = useState(true);
     const [showUsageChart, setShowUsageChart] = useState(false);
@@ -28,6 +28,7 @@ const MainPanel = () => {
             try {
                 const data = await fetchUsageSummary();
                 setUsageData(data.usageDetails);
+                console.log(usageData)
             } catch (error) {
                 console.error("Error fetching usage summary:", error);
             }

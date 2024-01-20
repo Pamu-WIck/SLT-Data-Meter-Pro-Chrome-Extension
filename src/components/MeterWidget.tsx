@@ -1,6 +1,17 @@
 import {Tooltip} from "flowbite-react";
 
-const MeterWidget = (json: { json: {name: string; limit: number; used: number; remaining: number; percentage: number; dailyQuota: number; currentDailyQuota: number; remainDailyQuota: number; }; }) => {
+type UsageData = {
+    name: string;
+    limit: number;
+    used: number;
+    remaining: number;
+    percentage: number;
+    dailyQuota?: number;
+    currentDailyQuota?: number;
+    remainDailyQuota?: number;
+}
+
+const MeterWidget = (json: { json: UsageData; }) => {
 
     const {name, limit, used, remaining, percentage, dailyQuota, currentDailyQuota, remainDailyQuota} = json.json;
     return (

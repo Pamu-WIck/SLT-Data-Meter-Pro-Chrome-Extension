@@ -2,10 +2,14 @@ import Logo from "../assets/SLT.svg";
 import {Logout} from "../data/logout.ts";
 import {Tooltip} from "flowbite-react";
 import {FiLogOut} from "react-icons/fi";
-import {CgNotes} from "react-icons/cg";
-import {FaChartLine} from "react-icons/fa6";
+import {ReactElement} from "react";
 
-const Header = ({onToggleButtonClick, currentIcon} : any) => {
+interface HeaderProps {
+    onToggleButtonClick: () => void;
+    currentIcon: ReactElement;
+}
+
+const Header = ({onToggleButtonClick, currentIcon} : HeaderProps) => {
 
 
 
@@ -21,7 +25,6 @@ const Header = ({onToggleButtonClick, currentIcon} : any) => {
                         className="absolute right-20 opacity-40 hover:opacity-100 hover:scale-105 transition-all duration-300"
                         onClick={onToggleButtonClick}>
                         {currentIcon}
-                        {/*todo change icon*/}
                     </button>
                 </Tooltip>
                 <Tooltip content="Click to Logout">
