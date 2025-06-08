@@ -14,6 +14,7 @@
     "axios": "^1.6.2",
     "flowbite": "^2.0.0",
     "flowbite-react": "^0.6.4",
+    "framer-motion": "^12.16.0",
     "react": "^18.2.0",
     "react-apexcharts": "^1.4.1",
     "react-dom": "^18.2.0",
