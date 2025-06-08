@@ -1,7 +1,7 @@
 import MeterWidget from "./MeterWidget.tsx";
 import Header from "./Header.tsx";
 import React, { useEffect, useState, Suspense } from "react";
-import {fetchUsageSummary, fetchVas} from "../data/fetch.ts";
+import {fetchUsageSummary, fetchVas, fetchExtraGB} from "../data/fetch.ts";
 import {Spinner} from "flowbite-react";
 import { BiLineChart } from "react-icons/bi";
 import {CgNotes} from "react-icons/cg";
@@ -38,6 +38,12 @@ const MainPanel = () => {
                 setUsageData(prevState => [...prevState, ...vasData.dataBundle.usageDetails]);
             } catch (error) {
                 console.error("Error fetching vas data:", error);
+            }
+            try {
+                const extraGBData = await fetchExtraGB();
+                setUsageData(prevState => [...prevState, ...extraGBData.dataBundle.usageDetails]);
+            } catch (error) {
+                console.error("Error fetching extra GB data:", error);
             } finally {
                 setIsLoading(false);
             }

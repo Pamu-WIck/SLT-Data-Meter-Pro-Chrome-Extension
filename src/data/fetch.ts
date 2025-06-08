@@ -7,19 +7,22 @@ const baseURL = 'https://omniscapp.slt.lk/mobitelint/slt/api/'
 
 
 
-const fetchData = async (url:string) => {
-
+const fetchData = async (url: string) => {
     const token = localStorage.getItem('token');
-
     const headers = {
-        accept: 'application/json, text/plain, */*',
+        'accept': '*/*',
         'accept-language': 'en-US,en;q=0.9,de-DE;q=0.8,de;q=0.7',
-        authorization: `bearer ${token}`,
-        'x-ibm-client-id': '41aed706-8fdf-4b1e-883e-91e44d7f379b'
+        'authorization': `bearer ${token}`,
+        'sec-ch-ua': '"Google Chrome";v="137", "Chromium";v="137", "Not/A)Brand";v="24"',
+        'sec-ch-ua-mobile': '?0',
+        'sec-ch-ua-platform': '"Windows"',
+        'sec-fetch-dest': 'empty',
+        'sec-fetch-mode': 'cors',
+        'sec-fetch-site': 'cross-site',
+        'x-ibm-client-id': 'b7402e9d66808f762ccedbe42c20668e',
     };
-
-    axios.defaults.baseURL = baseURL;
-    const response = await axios.get(url, {headers});
+    axios.defaults.baseURL = 'https://omniscapp.slt.lk/slt/ext/api/';
+    const response = await axios.get(url, { headers, withCredentials: true });
     return response.data;
 }
 
@@ -33,14 +36,17 @@ export const fetchLogin = async (username: string, password: string) => {
     };
 
     const headers = {
-        'Content-Type': 'application/x-www-form-urlencoded',
-        'x-ibm-client-id': '41aed706-8fdf-4b1e-883e-91e44d7f379b',
+        'accept': '*/*',
+        'accept-language': 'en-US,en;q=0.9,de-DE;q=0.8,de;q=0.7',
+        'content-type': 'application/x-www-form-urlencoded;charset=UTF-8',
+        'x-ibm-client-id': 'b7402e9d66808f762ccedbe42c20668e',
+        // Optionally add other headers from temp.js if needed
     };
 
-    axios.defaults.baseURL = baseURL; // Make sure baseURL is defined before using it
+    axios.defaults.baseURL = 'https://omniscapp.slt.lk/slt/ext/api/';
 
     try {
-        const response = await axios.post(url, new URLSearchParams(data).toString(), { headers });
+        const response = await axios.post(url, new URLSearchParams(data).toString(), { headers, withCredentials: true });
         console.timeLog();
         if (response.status === 200){
             const token = response.data.accessToken;
@@ -69,21 +75,22 @@ export const fetchGetServiceDetails = async (telephoneNo: number) => {
 }
 
 export const fetchUsageSummary = async () => {
-    const serviceID = localStorage.getItem('serviceID')
+    const serviceID = localStorage.getItem('serviceID');
     const url = `BBVAS/UsageSummary?subscriberID=${serviceID}`;
     const data = await fetchData(url);
-
-
     const UsageSummary = usageSum(data);
     historyLog(data, usage(UsageSummary));
-
     return UsageSummary;
 }
 
 export const fetchVas = async () => {
-    const serviceID = localStorage.getItem('serviceID')
+    const serviceID = localStorage.getItem('serviceID');
     const url = `BBVAS/GetDashboardVASBundles?subscriberID=${serviceID}`;
-    const data = await fetchData(url);
-    return data;
+    return await fetchData(url);
 }
 
+export const fetchExtraGB = async () => {
+    const serviceID = localStorage.getItem('serviceID');
+    const url = `BBVAS/ExtraGB?subscriberID=${serviceID}`;
+    return await fetchData(url);
+}
