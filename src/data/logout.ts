@@ -1,7 +1,7 @@
-//clear token and serviceID
-
 export const Logout = async () => {
-    localStorage.removeItem('token');
-    localStorage.removeItem('serviceID');
+    localStorage.removeItem('accesstkn');
+    localStorage.removeItem('serviceid');
+    localStorage.removeItem('username');
+    localStorage.removeItem('password');
     window.location.reload();
 }

@@ -4,7 +4,7 @@ import MainPanel from "./components/MainPanel.tsx";
 
 function App() {
 
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem("accesstkn");
 
   return (
     <>

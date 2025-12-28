@@ -2,20 +2,15 @@ import axios from "axios";
 import {usageSum} from "./usageSummary.ts";
 import {historyLog, usage} from "./history.ts";
 
-const baseURL = 'https://omniscapp.slt.lk/mobitelint/slt/api/'
-
-
-
+const baseURL = 'https://omniscapp.slt.lk/slt/ext/api/'
 
 const fetchData = async (url:string) => {
-
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem('accesstkn');
 
     const headers = {
-        accept: 'application/json, text/plain, */*',
-        'accept-language': 'en-US,en;q=0.9,de-DE;q=0.8,de;q=0.7',
-        authorization: `bearer ${token}`,
-        'x-ibm-client-id': '41aed706-8fdf-4b1e-883e-91e44d7f379b'
+        'Accept': '*/*',
+        'Authorization': `bearer ${token}`,
+        'X-Ibm-Client-Id': 'b7402e9d66808f762ccedbe42c20668e',
     };
 
     axios.defaults.baseURL = baseURL;
@@ -33,18 +28,18 @@ export const fetchLogin = async (username: string, password: string) => {
     };
 
     const headers = {
-        'Content-Type': 'application/x-www-form-urlencoded',
-        'x-ibm-client-id': '41aed706-8fdf-4b1e-883e-91e44d7f379b',
+        'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
+        'X-Ibm-Client-Id': 'b7402e9d66808f762ccedbe42c20668e',
     };
 
-    axios.defaults.baseURL = baseURL; // Make sure baseURL is defined before using it
+    axios.defaults.baseURL = baseURL;
 
     try {
         const response = await axios.post(url, new URLSearchParams(data).toString(), { headers });
-        console.timeLog();
         if (response.status === 200){
-            const token = response.data.accessToken;
-            localStorage.setItem('token', token);
+            localStorage.setItem('accesstkn', response.data.accessToken);
+            localStorage.setItem('username', username);
+            localStorage.setItem('password', password);
 
             await fetchGetAccountDetails(username);
         }
@@ -61,18 +56,17 @@ export const fetchGetAccountDetails = async (username: string) => {
     await fetchGetServiceDetails(data.dataBundle[0].telephoneno);
 }
 
-export const fetchGetServiceDetails = async (telephoneNo: number) => {
+export const fetchGetServiceDetails = async (telephoneNo: string) => {
     const url = `AccountOMNI/GetServiceDetailRequest?telephoneNo=${telephoneNo}`;
     const data = await fetchData(url);
-    localStorage.setItem('serviceID', data.dataBundle.listofBBService[0].serviceID);
+    localStorage.setItem('serviceid', data.dataBundle.listofBBService[0].serviceID);
     window.location.reload();
 }
 
 export const fetchUsageSummary = async () => {
-    const serviceID = localStorage.getItem('serviceID')
-    const url = `BBVAS/UsageSummary?subscriberID=${serviceID}`;
+    const serviceid = localStorage.getItem('serviceid');
+    const url = `BBVAS/UsageSummary?subscriberID=${serviceid}`;
     const data = await fetchData(url);
-
 
     const UsageSummary = usageSum(data);
     historyLog(data, usage(UsageSummary));
@@ -81,8 +75,8 @@ export const fetchUsageSummary = async () => {
 }
 
 export const fetchVas = async () => {
-    const serviceID = localStorage.getItem('serviceID')
-    const url = `BBVAS/GetDashboardVASBundles?subscriberID=${serviceID}`;
+    const serviceid = localStorage.getItem('serviceid');
+    const url = `BBVAS/GetDashboardVASBundles?subscriberID=${serviceid}`;
     const data = await fetchData(url);
     return data;
 }
