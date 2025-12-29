@@ -1,8 +1,8 @@
 import MeterWidget from "./MeterWidget.tsx";
+import SkeletonMeterWidget from "./SkeletonMeterWidget.tsx";
 import Header from "./Header.tsx";
 import React, { useEffect, useState, Suspense } from "react";
 import {fetchUsageSummary, fetchVas} from "../data/fetch.ts";
-import {Spinner} from "flowbite-react";
 
 const UsageChart = React.lazy(() => import("./UsageChart.tsx"));
 
@@ -39,13 +39,15 @@ const MainPanel = () => {
             <div className="flex flex-col justify-center gap-y-4">
                 <Header onToggleButtonClick={toggleMeterWidget}/>
 
-                {isLoading && (
-                    <div className="text-center">
-                        <Spinner color="success" aria-label="Purple Center-alined Extra large spinner example" size="xl"/>
-                    </div>
+                {isLoading && showMeterWidget && (
+                    <>
+                        <SkeletonMeterWidget />
+                        <SkeletonMeterWidget />
+                        <SkeletonMeterWidget />
+                    </>
                 )}
 
-                {showMeterWidget && usageData.map((usageItem, index) => (
+                {!isLoading && showMeterWidget && usageData.map((usageItem, index) => (
                     <MeterWidget key={index} json={usageItem} />
                 ))}
 
