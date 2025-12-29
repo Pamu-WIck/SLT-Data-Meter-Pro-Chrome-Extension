@@ -1,13 +1,17 @@
 import Logo from "../assets/slt.svg";
 import {FaUserAlt} from "react-icons/fa";
-import {RiLockPasswordFill} from "react-icons/ri";
-import {fetchLogin} from "../data/fetch.ts";
+import {RiLockPasswordFill, RiEyeLine, RiEyeOffLine} from "react-icons/ri";
+import {AiOutlineLoading3Quarters} from "react-icons/ai";
+import {fetchLogin, LoginError} from "../data/fetch.ts";
 import {useState} from "react";
 
 const Login = () => {
 
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
+    const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState<string | null>(null);
+    const [showPassword, setShowPassword] = useState(false);
 
     const handleUsernameChange = (event: any) => {
         setUsername(event.target.value);
@@ -17,13 +21,25 @@ const Login = () => {
         setPassword(event.target.value);
     }
 
+    const handleKeyDown = (event: React.KeyboardEvent) => {
+        if (event.key === 'Enter' && !isLoading) {
+            handleSignIn();
+        }
+    }
+
     const handleSignIn = async () => {
+        setError(null);
+        setIsLoading(true);
         try {
-            console.log("Clicked");
-            const data = await fetchLogin(username, password);
-            console.log(data);
+            await fetchLogin(username, password);
         } catch (e) {
-            console.error("Error fetching usage summary:", e);
+            if (e instanceof LoginError) {
+                setError(e.message);
+            } else {
+                setError('Something went wrong. Please try again');
+            }
+        } finally {
+            setIsLoading(false);
         }
     }
     return (
@@ -43,22 +59,47 @@ const Login = () => {
                         </div>
                         <input type="text" id="username"
                                className="block h-12 w-full rounded-lg border-none border-gray-300 text-sm font-medium text-white placeholder-opacity-20 bg-secondary ps-10 p-2.5 font-roboto focus:border-green-500 focus:ring-gray-500"
-                               placeholder="Username" value={username} onChange={handleUsernameChange}/>
+                               placeholder="Username" value={username} onChange={handleUsernameChange} onKeyDown={handleKeyDown}/>
                     </div>
 
                     <div className="relative my-2">
                         <div className="pointer-events-none absolute inset-y-0 flex items-center start-0 ps-3.5">
                             <RiLockPasswordFill className="h-5 w-5 text-gray-400 opacity-20" aria-hidden="true"/>
                         </div>
-                        <input type="password" id="password"
-                               className="block h-12 w-full rounded-lg border-none border-gray-300 text-sm font-medium text-white placeholder-opacity-20 bg-secondary ps-10 p-2.5 font-roboto focus:border-green-500 focus:ring-gray-500"
-                               placeholder="Password" value={password} onChange={handlePasswordChange}/>
+                        <input type={showPassword ? "text" : "password"} id="password"
+                               className="block h-12 w-full rounded-lg border-none border-gray-300 text-sm font-medium text-white placeholder-opacity-20 bg-secondary ps-10 pe-10 p-2.5 font-roboto focus:border-green-500 focus:ring-gray-500"
+                               placeholder="Password" value={password} onChange={handlePasswordChange} onKeyDown={handleKeyDown}/>
+                        <button
+                            type="button"
+                            className="absolute inset-y-0 end-0 flex items-center pe-3.5"
+                            onClick={() => setShowPassword(!showPassword)}>
+                            {showPassword ? (
+                                <RiEyeOffLine className="h-5 w-5 text-gray-400 opacity-50 hover:opacity-100 transition-opacity"/>
+                            ) : (
+                                <RiEyeLine className="h-5 w-5 text-gray-400 opacity-50 hover:opacity-100 transition-opacity"/>
+                            )}
+                        </button>
                     </div>
 
                     <button
-                        className="mx-auto rounded-full px-4 py-2 font-bold text-white font-roboto w-[30%] bg-primary_purple hover:bg-primary_blue" onClick={handleSignIn}>
-                        Sign In
+                        className={`mx-auto flex items-center justify-center gap-2 rounded-full px-4 py-2 font-bold text-white font-roboto w-[40%] bg-primary_purple transition-all duration-200 ${isLoading ? 'opacity-70 cursor-not-allowed' : 'hover:bg-primary_blue'}`}
+                        onClick={handleSignIn}
+                        disabled={isLoading}>
+                        {isLoading ? (
+                            <>
+                                <AiOutlineLoading3Quarters className="animate-spin" />
+                                Signing in...
+                            </>
+                        ) : (
+                            'Sign In'
+                        )}
                     </button>
+
+                    {error && (
+                        <div className="mx-auto mt-3 text-center text-sm text-red-400 font-roboto">
+                            {error}
+                        </div>
+                    )}
 
                     <div className="mx-auto pt-3 text-center font-semibold text-white text-opacity-50 font-roboto ">Sign
                         with MY SLT

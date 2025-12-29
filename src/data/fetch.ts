@@ -18,6 +18,13 @@ const fetchData = async (url:string) => {
     return response.data;
 }
 
+export class LoginError extends Error {
+    constructor(message: string) {
+        super(message);
+        this.name = 'LoginError';
+    }
+}
+
 export const fetchLogin = async (username: string, password: string) => {
     const url = 'Account/Login';
 
@@ -45,8 +52,25 @@ export const fetchLogin = async (username: string, password: string) => {
         }
         return response.data;
     } catch (error) {
-        console.error('Login failed:', error);
-        throw error;
+        if (axios.isAxiosError(error)) {
+            if (error.response) {
+                const status = error.response.status;
+                if (status === 401) {
+                    throw new LoginError('Invalid username or password');
+                } else if (status === 403) {
+                    throw new LoginError('Account access denied. Please contact SLT');
+                } else if (status >= 500) {
+                    throw new LoginError('Service temporarily unavailable. Please try again later');
+                } else {
+                    throw new LoginError('Login failed. Please try again');
+                }
+            } else if (error.code === 'ECONNABORTED') {
+                throw new LoginError('Request timed out. Please try again');
+            } else if (error.code === 'ERR_NETWORK') {
+                throw new LoginError('Unable to connect. Check your internet connection');
+            }
+        }
+        throw new LoginError('Something went wrong. Please try again');
     }
 };
 
