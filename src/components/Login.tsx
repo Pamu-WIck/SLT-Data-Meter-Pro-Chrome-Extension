@@ -2,14 +2,16 @@ import Logo from "../assets/slt.svg";
 import {FaUserAlt} from "react-icons/fa";
 import {RiLockPasswordFill, RiEyeLine, RiEyeOffLine} from "react-icons/ri";
 import {AiOutlineLoading3Quarters} from "react-icons/ai";
-import {fetchLogin, LoginError} from "../data/fetch.ts";
+import {fetchLogin, importSessionFromWebsite, LoginError} from "../data/fetch.ts";
 import {useState} from "react";
+import {FiExternalLink} from "react-icons/fi";
 
 const Login = () => {
 
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [isLoading, setIsLoading] = useState(false);
+    const [isImporting, setIsImporting] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const [showPassword, setShowPassword] = useState(false);
 
@@ -42,6 +44,23 @@ const Login = () => {
             setIsLoading(false);
         }
     }
+
+    const handleImportSession = async () => {
+        setError(null);
+        setIsImporting(true);
+        try {
+            await importSessionFromWebsite();
+        } catch (e) {
+            if (e instanceof LoginError) {
+                setError(e.message);
+            } else {
+                setError('Failed to import session. Please try again');
+            }
+        } finally {
+            setIsImporting(false);
+        }
+    }
+
     return (
         <>
 
@@ -101,9 +120,28 @@ const Login = () => {
                         </div>
                     )}
 
-                    <div className="mx-auto pt-3 text-center font-semibold text-white text-opacity-50 font-roboto ">Sign
-                        with MY SLT
+                    <div className="flex items-center my-4">
+                        <div className="flex-1 border-t border-gray-600"></div>
+                        <span className="px-3 text-sm text-gray-400 font-roboto">OR</span>
+                        <div className="flex-1 border-t border-gray-600"></div>
                     </div>
+
+                    <button
+                        className={`mx-auto flex items-center justify-center gap-2 rounded-full px-4 py-2 font-bold text-white font-roboto w-[70%] border border-primary_blue bg-transparent transition-all duration-200 ${isImporting ? 'opacity-70 cursor-not-allowed' : 'hover:bg-primary_blue hover:bg-opacity-20'}`}
+                        onClick={handleImportSession}
+                        disabled={isImporting || isLoading}>
+                        {isImporting ? (
+                            <>
+                                <AiOutlineLoading3Quarters className="animate-spin" />
+                                Importing...
+                            </>
+                        ) : (
+                            <>
+                                <FiExternalLink />
+                                Login with MySLT Session
+                            </>
+                        )}
+                    </button>
 
                 </div>
             </div>

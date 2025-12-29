@@ -25,6 +25,53 @@ export class LoginError extends Error {
     }
 }
 
+export const importSessionFromWebsite = async (): Promise<void> => {
+    // Find MySLT tab
+    const tabs = await chrome.tabs.query({ url: 'https://myslt.slt.lk/*' });
+
+    if (tabs.length === 0) {
+        // Open MySLT website if not already open
+        await chrome.tabs.create({ url: 'https://myslt.slt.lk/', active: true });
+        throw new LoginError('Please login to MySLT website and try again');
+    }
+
+    const tabId = tabs[0].id;
+    if (!tabId) {
+        throw new LoginError('Could not access MySLT tab');
+    }
+
+    // Inject script to read localStorage from MySLT website
+    const results = await chrome.scripting.executeScript({
+        target: { tabId },
+        func: () => {
+            return {
+                accessToken: localStorage.getItem('slt_accessToken'),
+                selectedAcc: localStorage.getItem('selectedAcc')
+            };
+        }
+    });
+
+    if (!results || results.length === 0 || !results[0].result) {
+        throw new LoginError('Could not read session from MySLT website');
+    }
+
+    const { accessToken, selectedAcc } = results[0].result;
+
+    if (!accessToken) {
+        throw new LoginError('Please login to MySLT website first');
+    }
+
+    if (!selectedAcc) {
+        throw new LoginError('No account selected on MySLT website');
+    }
+
+    // Store the access token
+    localStorage.setItem('accesstkn', accessToken);
+
+    // Fetch service details using the selected account (telephone number)
+    await fetchGetServiceDetails(selectedAcc);
+};
+
 export const fetchLogin = async (username: string, password: string) => {
     const url = 'Account/Login';
 
